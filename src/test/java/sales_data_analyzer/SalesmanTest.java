@@ -44,6 +44,7 @@ public class SalesmanTest
     {
         Salesman t = new Salesman();
         assertFalse(t.parser("002ç12345678901çName 1ç123456.78"));
+        assertFalse(t.parser("003ç12345678901çName 1ç123456.78"));
     }
 
     /**
@@ -115,5 +116,22 @@ public class SalesmanTest
         Salesman t = new Salesman();
         assertFalse(t.parser("001ç12345678901çName 1ç123A45"));
         assertFalse(t.parser("001ç12345678901çName 1ç123,45"));
+    }
+
+    /**
+     * Test validating the input example.
+     */
+    public void testValidatingInputExample()
+    {
+        Salesman t = new Salesman();
+        assertTrue(t.parser("001ç1234567891234çDiegoç50000"));
+        assertTrue(t.getCPF().equals("1234567891234"));
+        assertTrue(t.getName().equals("Diego"));
+        assertTrue(t.getSalary() == 50000);
+
+        assertTrue(t.parser("001ç3245678865434çRenatoç40000.99"));
+        assertTrue(t.getCPF().equals("3245678865434"));
+        assertTrue(t.getName().equals("Renato"));
+        assertTrue(t.getSalary() == 40000.99f);
     }
 }
