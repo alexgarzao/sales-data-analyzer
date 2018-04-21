@@ -6,14 +6,15 @@ package sales_data_analyzer;
 * @author  Alex S. Garzão
 * @version 0.1
 */
-public class Salesman
+public class Salesman extends Record
 {
-    String CPF;
-    String name;
-    float salary;
+    private String CPF;
+    private String name;
+    private float salary;
 
-    public void Salesman()
+    public Salesman()
     {
+        super("001", 4);
     }
 
     /**
@@ -29,13 +30,7 @@ public class Salesman
         name = "";
         salary = 0;
 
-        String[] tokens = data.split("ç");
-
-        if (tokens.length != 4) {
-            return false;
-        }
-
-        if (tokens[0].equals("001") == false) {
+        if (super.parser(data) == false) {
             return false;
         }
 
