@@ -36,7 +36,7 @@ public class SalesFileTest
     public void testInterpretingBasicExample1()
     {
         try {
-            SalesFile t = new SalesFile("samples/base.dat", "samples/base.done.dat");
+            SalesFile t = new SalesFile("samples/data/in/base.dat", "samples/data/out/base.done.dat", "samples/data/proc/base.dat");
             t.process();
             assertEquals(t.getTotalSalesman(), 2);
             assertEquals(t.getTotalClients(), 2);
@@ -55,7 +55,7 @@ public class SalesFileTest
     public void testInterpretingBasicExample2()
     {
         try {
-            SalesFile t = new SalesFile("samples/base_2.dat", "samples/base_2.done.dat");
+            SalesFile t = new SalesFile("samples/data/in/base_2.dat", "samples/data/out/base_2.done.dat", "samples/data/proc/base_2.dat");
             t.process();
             assertEquals(t.getTotalSalesman(), 2);
             assertEquals(t.getTotalClients(), 3);

@@ -5,20 +5,19 @@ import java.io.FileNotFoundException;
 
 public class WorkerThread implements Runnable {
 
-    private String inFilename;
-    private String outFilename;
+    private WorkerConfig config;
 
-    public WorkerThread(String inFilename, String outFilename){
-        this.inFilename = inFilename;
-        this.outFilename = outFilename;
+    public WorkerThread(WorkerConfig config)
+    {
+        this.config = config;
     }
 
     @Override
     public void run() {
         try {
-            System.out.println(Thread.currentThread().getName()+" Start. Command = " + inFilename);
+            System.out.println(Thread.currentThread().getName()+" Start. Command = " + config.inFilename);
             processCommand();
-            System.out.println(Thread.currentThread().getName()+" End. Command = " + outFilename);
+            System.out.println(Thread.currentThread().getName()+" End. Command = " + config.outFilename);
         } catch(Exception e) {
             System.out.println(e);
         }
@@ -32,11 +31,11 @@ public class WorkerThread implements Runnable {
         }
 
         try {
-            SalesFile t = new SalesFile(inFilename, outFilename);
+            SalesFile t = new SalesFile(config.inFilename, config.outFilename, config.bkpFilename);
             t.process();
             // TODO: nome do arquivo = trocar .dat por .done.dat
-            t.saveFileStats();
-            System.out.println("TotalSalesman: " + t.getTotalSalesman());
+            // t.saveFileStats();
+            // System.out.println("TotalSalesman: " + t.getTotalSalesman());
             // System.out.println("TotalClients: " + t.getTotalClients());
             // System.out.println("MostExpensiveSaleId: " + t.getMostExpensiveSaleId());
             // System.out.println("WorstSalesman: " + t.getWorstSalesman());
@@ -49,6 +48,6 @@ public class WorkerThread implements Runnable {
 
     @Override
     public String toString(){
-        return this.inFilename;
+        return config.inFilename;
     }
 }

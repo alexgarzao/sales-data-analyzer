@@ -12,6 +12,10 @@ import java.io.IOException;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.nio.file.StandardCopyOption;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 
 /**
@@ -24,6 +28,7 @@ public class SalesFile
 {
     private String inFilename;
     private String outFilename;
+    private String bkpFilename;
     private Salesman salesmanData = new Salesman();
     private Customer customerData = new Customer();
     private Sales salesData = new Sales();
@@ -31,10 +36,11 @@ public class SalesFile
     /**
     * SalesFile is responsible to define the file to be parsed.
     */
-    public SalesFile(String inFilename, String outFilename)
+    public SalesFile(String inFilename, String outFilename, String bkpFilename)
     {
         this.inFilename = inFilename;
         this.outFilename = outFilename;
+        this.bkpFilename = bkpFilename;
     }
 
     /**
@@ -74,6 +80,10 @@ public class SalesFile
         }
 
         in.close();
+
+        saveFileStats();
+
+        doFileBackup();
     }
 
     /**
@@ -139,5 +149,17 @@ public class SalesFile
         writer.write(str.toString());
 
         writer.close();
+    }
+
+    public void doFileBackup()
+    {
+        Path source = Paths.get(inFilename);
+        Path target = Paths.get(bkpFilename);
+
+        try {
+            Files.move(source, target, StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception ex) {
+            // TODO
+        }
     }
 }

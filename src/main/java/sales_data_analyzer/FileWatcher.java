@@ -37,7 +37,9 @@ public class FileWatcher
         String file = p.getFileName().toString();
 
         String outFilename = "./data/out/" + file.replace(".dat", ".done.dat");
-        Runnable worker = new WorkerThread(inFilename, outFilename);
+        String bkpFilename = "./data/proc/" + file;
+        WorkerConfig config = new WorkerConfig(inFilename, outFilename, bkpFilename);
+        Runnable worker = new WorkerThread(config);
         executor.execute(worker);
     }
 
