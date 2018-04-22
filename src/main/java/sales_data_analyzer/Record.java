@@ -11,6 +11,7 @@ public class Record
     private String recordId;
     private int dataNumber;
     protected String[] tokens;
+    private int total;
 
     public Record(String recordId, int dataNumber)
     {
@@ -37,6 +38,8 @@ public class Record
             return false;
         }
 
+        total += 1;
+
         return true;
     }
 
@@ -52,5 +55,15 @@ public class Record
         }
 
         return tokens[index];
+    }
+
+    public String getId()
+    {
+        return recordId;
+    }
+
+    public int getTotal()
+    {
+        return total;
     }
 }
