@@ -10,6 +10,13 @@ import junit.framework.TestSuite;
 public class SalesmanTest
         extends TestCase
 {
+    private Salesman t;
+
+    protected void setUp()
+    {
+        t = new Salesman();
+    }
+
     /**
      * Create the test case
      *
@@ -33,7 +40,6 @@ public class SalesmanTest
      */
     public void testWithValidData()
     {
-        Salesman t = new Salesman();
         assertTrue(t.parser("001ç12345678901çName 1ç123456.78"));
     }
 
@@ -42,7 +48,6 @@ public class SalesmanTest
      */
     public void testWithInvalidFormatId()
     {
-        Salesman t = new Salesman();
         assertFalse(t.parser("002ç12345678901çName 1ç123456.78"));
         assertFalse(t.parser("003ç12345678901çName 1ç123456.78"));
     }
@@ -52,7 +57,6 @@ public class SalesmanTest
      */
     public void testWithLessDataThanNecessary()
     {
-        Salesman t = new Salesman();
         assertFalse(t.parser("001ç12345678901çName 1ç"));
         assertFalse(t.parser("001ç12345678901çName 1"));
         assertFalse(t.parser("001ç12345678901ç"));
@@ -66,7 +70,6 @@ public class SalesmanTest
      */
     public void testWithMoreDataThanNecessary()
     {
-        Salesman t = new Salesman();
         assertFalse(t.parser("001ç12345678901çName 1ç123456.78ç12"));
         assertFalse(t.parser("001ç12345678901çName 1ç123456.78çAç"));
         assertFalse(t.parser("001ç12345678901çName 1ç123456.78çAç12"));
@@ -77,7 +80,6 @@ public class SalesmanTest
      */
     public void testValidatingCPF()
     {
-        Salesman t = new Salesman();
         assertTrue(t.parser("001ç12345678901çName 1ç123456.78"));
         assertTrue(t.getCPF().equals("12345678901"));
     }
@@ -87,7 +89,6 @@ public class SalesmanTest
      */
     public void testValidatingName()
     {
-        Salesman t = new Salesman();
         assertTrue(t.parser("001ç12345678901çName 1ç123456.78"));
         assertTrue(t.getName().equals("Name 1"));
     }
@@ -97,7 +98,6 @@ public class SalesmanTest
      */
     public void testValidatingSalary()
     {
-        Salesman t = new Salesman();
         assertTrue(t.parser("001ç12345678901çName 1ç123456.78"));
         assertTrue(t.getSalary() == 123456.78f);
 
@@ -113,7 +113,6 @@ public class SalesmanTest
      */
     public void testWithInvalidSalary()
     {
-        Salesman t = new Salesman();
         assertFalse(t.parser("001ç12345678901çName 1ç123A45"));
         assertFalse(t.parser("001ç12345678901çName 1ç123,45"));
     }
@@ -123,7 +122,6 @@ public class SalesmanTest
      */
     public void testValidatingInputExample()
     {
-        Salesman t = new Salesman();
         assertTrue(t.parser("001ç1234567891234çDiegoç50000"));
         assertTrue(t.getCPF().equals("1234567891234"));
         assertTrue(t.getName().equals("Diego"));
