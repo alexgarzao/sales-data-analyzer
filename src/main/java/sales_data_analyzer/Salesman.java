@@ -1,7 +1,7 @@
 package sales_data_analyzer;
 
 /**
-* Salesman class is responsible to parser and keep the data.
+* Salesman class is responsible to parser and keep the salesman data.
 *
 * @author  Alex S. Garzão
 * @version 0.1

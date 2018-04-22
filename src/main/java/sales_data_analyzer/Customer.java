@@ -1,7 +1,7 @@
 package sales_data_analyzer;
 
 /**
-* Customer class is responsible to parser and keep the data.
+* Customer class is responsible to parser and keep the customer data.
 *
 * @author  Alex S. Garzão
 * @version 0.1

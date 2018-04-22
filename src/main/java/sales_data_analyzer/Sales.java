@@ -5,7 +5,7 @@ import java.util.Map;
 
 
 /**
-* Salesman class is responsible to parser and keep the data.
+* Sales class is responsible to parser and keep the sales data.
 *
 * @author  Alex S. Garzão
 * @version 0.1
