@@ -22,7 +22,8 @@ import java.util.Map;
 */
 public class SalesFile
 {
-    private String filename;
+    private String inFilename;
+    private String outFilename;
     private Salesman salesmanData = new Salesman();
     private Customer customerData = new Customer();
     private Sales salesData = new Sales();
@@ -30,9 +31,10 @@ public class SalesFile
     /**
     * SalesFile is responsible to define the file to be parsed.
     */
-    public SalesFile(String filename)
+    public SalesFile(String inFilename, String outFilename)
     {
-        this.filename = filename;
+        this.inFilename = inFilename;
+        this.outFilename = outFilename;
     }
 
     /**
@@ -56,7 +58,7 @@ public class SalesFile
     */
     public void process() throws FileNotFoundException, IOException
     {
-        BufferedInputStream bf = new BufferedInputStream(new FileInputStream(filename));
+        BufferedInputStream bf = new BufferedInputStream(new FileInputStream(inFilename));
         BufferedReader in = new BufferedReader(new InputStreamReader(bf, StandardCharsets.UTF_8));
 
         Map<String, Record> recordTypes = mapAllRecordTypes();
@@ -95,16 +97,6 @@ public class SalesFile
     }
 
     /**
-    * getFilename is responsible to returns the filename.
-    *
-    * @return the filename.
-    */
-    public String getFilename()
-    {
-        return filename;
-    }
-
-    /**
     * getMostExpensiveSaleId is responsible to return the most expensive sale id.
     *
     * @return the most expensive sale id.
@@ -130,7 +122,7 @@ public class SalesFile
     * Format: 099çTotalSalesMançTotalClientsçMostExpensiveSaleIdçWorstSalesman
     * @return the worst salesman.
     */
-    public void saveFileStats(String outFilename) throws IOException {
+    public void saveFileStats() throws IOException {
         // System.out.println("TotalSalesman: " + t.getTotalSalesman());
         // System.out.println("TotalClients: " + t.getTotalClients());
         // System.out.println("MostExpensiveSaleId: " + t.getMostExpensiveSaleId());

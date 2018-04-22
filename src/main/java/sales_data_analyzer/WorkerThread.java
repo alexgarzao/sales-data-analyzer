@@ -5,18 +5,20 @@ import java.io.FileNotFoundException;
 
 public class WorkerThread implements Runnable {
 
-    private String command;
+    private String inFilename;
+    private String outFilename;
 
-    public WorkerThread(String s){
-        this.command=s;
+    public WorkerThread(String inFilename, String outFilename){
+        this.inFilename = inFilename;
+        this.outFilename = outFilename;
     }
 
     @Override
     public void run() {
         try {
-            System.out.println(Thread.currentThread().getName()+" Start. Command = "+command);
+            System.out.println(Thread.currentThread().getName()+" Start. Command = " + inFilename);
             processCommand();
-            System.out.println(Thread.currentThread().getName()+" End.");
+            System.out.println(Thread.currentThread().getName()+" End. Command = " + outFilename);
         } catch(Exception e) {
             System.out.println(e);
         }
@@ -30,10 +32,10 @@ public class WorkerThread implements Runnable {
         }
 
         try {
-            SalesFile t = new SalesFile("data/in/base.dat");
+            SalesFile t = new SalesFile(inFilename, outFilename);
             t.process();
             // TODO: nome do arquivo = trocar .dat por .done.dat
-            t.saveFileStats("data/out/base.done.dat");
+            t.saveFileStats();
             System.out.println("TotalSalesman: " + t.getTotalSalesman());
             // System.out.println("TotalClients: " + t.getTotalClients());
             // System.out.println("MostExpensiveSaleId: " + t.getMostExpensiveSaleId());
@@ -47,6 +49,6 @@ public class WorkerThread implements Runnable {
 
     @Override
     public String toString(){
-        return this.command;
+        return this.inFilename;
     }
 }

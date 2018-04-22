@@ -31,16 +31,15 @@ public class FileWatcher
         this.executor = executor;
     }
 
-    private void addWork(String filename)
+    private void addWork(String inFilename)
     {
-        Runnable worker = new WorkerThread(filename, filename);
+        Path p = Paths.get(inFilename);
+        String file = p.getFileName().toString();
+
+        String outFilename = "./data/out/" + file.replace(".dat", ".done.dat");
+        Runnable worker = new WorkerThread(inFilename, outFilename);
         executor.execute(worker);
     }
-
-    // private void processEvent(WatchEvent<?> event) {
-    //     Runnable worker = new WorkerThread("Arquivo " + (Path) event.context());
-    //     executor.execute(worker);
-    // }
 
     /**
     * TODO is responsible to extract the data from a file line.
@@ -62,7 +61,7 @@ public class FileWatcher
             try {
                 DirectoryStream<Path> directoryStream = Files.newDirectoryStream(Paths.get("./data/in"));
                 for (Path path : directoryStream) {
-                    addWork("Arquivo " + path.toString());
+                    addWork(path.toString());
                 }
             } catch (IOException ex) {
                 // TODO
@@ -75,7 +74,7 @@ public class FileWatcher
 
                 // Poll for file system events on the WatchKey.
                 for (final WatchEvent<?> event : watchKey.pollEvents()) {
-                    addWork("Arquivo " + event.context());
+                    addWork("./data/in/" + event.context());
                 }
 
                 // If the watched directed gets deleted, get out of run method.
