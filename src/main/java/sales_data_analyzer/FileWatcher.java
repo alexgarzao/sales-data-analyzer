@@ -31,10 +31,16 @@ public class FileWatcher
         this.executor = executor;
     }
 
-    private void processEvent(WatchEvent<?> event) {
-        Runnable worker = new WorkerThread("Arquivo " + (Path) event.context());
+    private void addWork(String filename)
+    {
+        Runnable worker = new WorkerThread(filename);
         executor.execute(worker);
     }
+
+    // private void processEvent(WatchEvent<?> event) {
+    //     Runnable worker = new WorkerThread("Arquivo " + (Path) event.context());
+    //     executor.execute(worker);
+    // }
 
     /**
     * TODO is responsible to extract the data from a file line.
@@ -45,14 +51,8 @@ public class FileWatcher
     */
     public void start()
     {
-        /*
-        TODO: configura o watcher e le apenas create file
-        carrega todos os arquivos existentes na pasta e envia para executor
-        while(le eventos do watcher)
-            alimenta executor
-        */
         try {
-            // INotify config.
+            // INotify config to watch for files in a specific filepath.
             WatchService watchService = path.getFileSystem().newWatchService();
             path.register(watchService, StandardWatchEventKinds.ENTRY_MODIFY);
 
@@ -60,22 +60,23 @@ public class FileWatcher
             try {
                 DirectoryStream<Path> directoryStream = Files.newDirectoryStream(Paths.get("./data/in"));
                 for (Path path : directoryStream) {
-                    Runnable worker = new WorkerThread("Arquivo " + path.toString());
-                    executor.execute(worker);
+                    addWork("Arquivo " + path.toString());
                 }
-            } catch (IOException ex) {}
+            } catch (IOException ex) {
+                // TODO
+            }
 
             // Loop forever to watch directory.
             while (true) {
                 WatchKey watchKey;
-                watchKey = watchService.take(); // this call is blocking until events are present
+                watchKey = watchService.take();
 
-                // poll for file system events on the WatchKey
+                // Poll for file system events on the WatchKey.
                 for (final WatchEvent<?> event : watchKey.pollEvents()) {
-                    processEvent(event);
+                    addWork("Arquivo " + event.context());
                 }
 
-                // if the watched directed gets deleted, get out of run method
+                // If the watched directed gets deleted, get out of run method.
                 if (!watchKey.reset()) {
                     System.out.println("No longer valid");
                     watchKey.cancel();
@@ -87,7 +88,7 @@ public class FileWatcher
             System.out.println("interrupted. Goodbye");
             return;
         } catch (IOException ex) {
-            ex.printStackTrace();  // don't do this in production code. Use a loggin framework
+            ex.printStackTrace();  // TODO: don't do this in production code. Use a loggin framework
             return;
         }
     }

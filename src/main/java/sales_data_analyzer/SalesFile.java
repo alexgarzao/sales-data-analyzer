@@ -1,9 +1,11 @@
 package sales_data_analyzer;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.BufferedInputStream;
 import java.io.InputStreamReader;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.nio.charset.StandardCharsets;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -120,5 +122,13 @@ public class SalesFile
     public String getWorstSalesman()
     {
         return salesData.getWorstSalesman();
+    }
+
+    public void saveFileStats(String outFilename) throws IOException {
+        String str = "Hello";
+        BufferedWriter writer = new BufferedWriter(new FileWriter(outFilename));
+        writer.write(str);
+
+        writer.close();
     }
 }
