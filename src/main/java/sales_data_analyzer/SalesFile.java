@@ -124,10 +124,27 @@ public class SalesFile
         return salesData.getWorstSalesman();
     }
 
+    /**
+    * TODO is responsible to return the worst salesman.
+    *
+    * Format: 099çTotalSalesMançTotalClientsçMostExpensiveSaleIdçWorstSalesman
+    * @return the worst salesman.
+    */
     public void saveFileStats(String outFilename) throws IOException {
-        String str = "Hello";
+        // System.out.println("TotalSalesman: " + t.getTotalSalesman());
+        // System.out.println("TotalClients: " + t.getTotalClients());
+        // System.out.println("MostExpensiveSaleId: " + t.getMostExpensiveSaleId());
+        // System.out.println("WorstSalesman: " + t.getWorstSalesman());
+
+        StringBuilder str = new StringBuilder("099");
+        str.append("ç" + getTotalSalesman());
+        str.append("ç" + getTotalClients());
+        str.append("ç" + getMostExpensiveSaleId());
+        str.append("ç" + getWorstSalesman());
+        str.append('\n');
+
         BufferedWriter writer = new BufferedWriter(new FileWriter(outFilename));
-        writer.write(str);
+        writer.write(str.toString());
 
         writer.close();
     }
