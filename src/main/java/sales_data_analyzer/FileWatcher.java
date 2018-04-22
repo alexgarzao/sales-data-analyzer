@@ -33,7 +33,7 @@ public class FileWatcher
 
     private void addWork(String filename)
     {
-        Runnable worker = new WorkerThread(filename);
+        Runnable worker = new WorkerThread(filename, filename);
         executor.execute(worker);
     }
 
@@ -51,6 +51,8 @@ public class FileWatcher
     */
     public void start()
     {
+        createDefaultDataDirs();
+
         try {
             // INotify config to watch for files in a specific filepath.
             WatchService watchService = path.getFileSystem().newWatchService();
@@ -90,6 +92,19 @@ public class FileWatcher
         } catch (IOException ex) {
             ex.printStackTrace();  // TODO: don't do this in production code. Use a loggin framework
             return;
+        }
+    }
+
+    private void createDefaultDataDirs()
+    {
+        try {
+            Files.createDirectories(Paths.get("data/in"));
+            Files.createDirectories(Paths.get("data/out"));
+            Files.createDirectories(Paths.get("data/proc"));
+            Files.createDirectories(Paths.get("data/log"));
+        } catch(IOException ex)
+        {
+            // TODO
         }
     }
 }
