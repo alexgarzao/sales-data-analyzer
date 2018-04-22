@@ -25,15 +25,8 @@ public class WorkerThread implements Runnable {
 
     private void processCommand() throws FileNotFoundException, IOException {
         try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        try {
             SalesFile t = new SalesFile(config.inFilename, config.outFilename, config.bkpFilename);
             t.process();
-            // TODO: nome do arquivo = trocar .dat por .done.dat
             // t.saveFileStats();
             // System.out.println("TotalSalesman: " + t.getTotalSalesman());
             // System.out.println("TotalClients: " + t.getTotalClients());
