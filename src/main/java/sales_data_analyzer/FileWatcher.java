@@ -61,7 +61,7 @@ public class FileWatcher
 
             // Read files from path (only once, on the startup).
             try {
-                DirectoryStream<Path> directoryStream = Files.newDirectoryStream(Paths.get("./data/in"));
+                DirectoryStream<Path> directoryStream = Files.newDirectoryStream(Paths.get("./data/in"), "*.dat");
                 for (Path path : directoryStream) {
                     addWork(path.toString());
                 }
@@ -76,7 +76,9 @@ public class FileWatcher
 
                 // Poll for file system events on the WatchKey.
                 for (final WatchEvent<?> event : watchKey.pollEvents()) {
-                    addWork("./data/in/" + event.context());
+                    if (event.context().toString().endsWith(".dat")) {
+                        addWork("./data/in/" + event.context());
+                    }
                 }
 
                 // If the watched directed gets deleted, get out of run method.
