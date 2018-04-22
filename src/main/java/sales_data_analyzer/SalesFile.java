@@ -76,6 +76,9 @@ public class SalesFile
             Record record = recordTypes.get(formatId);
             // TODO: and if the formatId doesn't exist?
             record.parser(recordLine);
+            if (formatId.equals("001")) {
+                salesData.addNewSalesman(salesmanData.getName());
+            }
             recordLine = in.readLine();
         }
 

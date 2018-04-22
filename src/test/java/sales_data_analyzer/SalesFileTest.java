@@ -68,5 +68,43 @@ public class SalesFileTest
         }
     }
 
+    /**
+     * Interpreting example where a salesman doesn't have sales.
+     */
+    public void testSalesmanWithoutSales()
+    {
+        try {
+            SalesFile t = new SalesFile("samples/data/in/base_3.dat", "samples/data/out/base_3.done.dat", "samples/data/proc/base_3.dat");
+            t.process();
+            assertEquals(t.getTotalSalesman(), 3);
+            assertEquals(t.getTotalClients(), 4);
+            assertEquals(t.getMostExpensiveSaleId(), "08");
+            assertEquals(t.getWorstSalesman(), "Alex");
+        } catch(FileNotFoundException e) {
+            assertTrue("File must exist to complete the test!", false);
+        } catch(IOException e) {
+            assertTrue("IO exception!", false);
+        }
+    }
+
+    /**
+     * Interpreting example where a salesman has more than one sale.
+     */
+    public void testSalesmanWithTwoSales()
+    {
+        try {
+            SalesFile t = new SalesFile("samples/data/in/base_4.dat", "samples/data/out/base_4.done.dat", "samples/data/proc/base_4.dat");
+            t.process();
+            assertEquals(t.getTotalSalesman(), 2);
+            assertEquals(t.getTotalClients(), 4);
+            assertEquals(t.getMostExpensiveSaleId(), "10");
+            assertEquals(t.getWorstSalesman(), "Renato");
+        } catch(FileNotFoundException e) {
+            assertTrue("File must exist to complete the test!", false);
+        } catch(IOException e) {
+            assertTrue("IO exception!", false);
+        }
+    }
+
     // TODO: example with a lot of data.
 }

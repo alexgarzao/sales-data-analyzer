@@ -112,6 +112,11 @@ public class Sales extends Record
         return mostExpensiveSaleId;
     }
 
+    public void addNewSalesman(String salesmanName)
+    {
+        salesPerSeller.putIfAbsent(salesmanName, 0f);
+    }
+
     public String getWorstSalesman()
     {
         float worstTotal = Float.MAX_VALUE;

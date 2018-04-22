@@ -14,6 +14,5 @@ prepdata:
 	cp samples/test/base.dat data/in/base.dat
 	cp samples/test/base_2.dat data/in/base_2.dat
 	cp samples/test/base.dat data/in/basex3.dat
-	cp samples/test/base.dat samples/data/in/base.dat
-	cp samples/test/base_2.dat samples/data/in/base_2.dat
 	cp samples/test/base.dat data/in/base.xxx
+	cp samples/test/* samples/data/in
