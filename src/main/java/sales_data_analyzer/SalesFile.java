@@ -18,7 +18,7 @@ import java.util.Map;
 
 
 /**
-* SalesFile class is responsible to read, parser and keep the stats data.
+* SalesFile class is responsible to parser and keep the stats data.
 *
 * @author  Alex S. Garzão
 * @version 0.1
@@ -26,40 +26,27 @@ import java.util.Map;
 public class SalesFile
 {
     private String filename;
-    private BufferedReader in;
     private Salesman salesmanData = new Salesman();
     private Customer customerData = new Customer();
     private Sales salesData = new Sales();
 
+    /**
+    * SalesFile is responsible to define the file to be parsed.
+    */
     public SalesFile(String filename)
     {
         this.filename = filename;
     }
 
-    private void open() throws FileNotFoundException
-    {
-        BufferedInputStream bf = new BufferedInputStream(new FileInputStream(filename));
-        in = new BufferedReader(new InputStreamReader(bf, StandardCharsets.UTF_8));
-    }
-
-    private void close() throws IOException
-    {
-        in.close();
-    }
-
     /**
-    * readLine is responsible to read a line from the file.
+    * mapAllRecordTypes is responsible to map all record types.
     *
-    * @return line readed.
+    * @return all record types mapped.
     */
-    private String readLine() throws IOException
-    {
-        return in.readLine();
-    }
-
-    private Map<String, Record> registryAllRecordTypes()
+    private Map<String, Record> mapAllRecordTypes()
     {
         Map<String, Record> recordTypes = new HashMap<String, Record>();
+
         recordTypes.put(salesmanData.getId(), salesmanData);
         recordTypes.put(customerData.getId(), customerData);
         recordTypes.put(salesData.getId(), salesData);
@@ -67,41 +54,74 @@ public class SalesFile
         return recordTypes;
     }
 
+    /**
+    * process is responsible to extract all the data from a file.
+    */
     public void process() throws FileNotFoundException, IOException
     {
-        open();
+        BufferedInputStream bf = new BufferedInputStream(new FileInputStream(filename));
+        BufferedReader in = new BufferedReader(new InputStreamReader(bf, StandardCharsets.UTF_8));
 
-        Map<String, Record> recordTypes = registryAllRecordTypes();
-        String recordLine = readLine();
+        Map<String, Record> recordTypes = mapAllRecordTypes();
+
+        String recordLine = in.readLine();
+
         while(recordLine != null) {
-            Record record = recordTypes.get(recordLine.substring(0, 3));
+            String formatId = recordLine.substring(0, 3);
+            Record record = recordTypes.get(formatId);
+            // TODO: and if the formatId doesn't exist?
             record.parser(recordLine);
-            recordLine = readLine();
+            recordLine = in.readLine();
         }
 
-        close();
+        in.close();
     }
 
+    /**
+    * getTotalSalesman is responsible to return the total of salesman.
+    *
+    * @return the total of salesman.
+    */
     public int getTotalSalesman()
     {
         return salesmanData.getTotal();
     }
 
+    /**
+    * getTotalClientes is responsible to return the total of clients.
+    *
+    * @return the total of salesman.
+    */
     public int getTotalClients()
     {
         return customerData.getTotal();
     }
 
+    /**
+    * getFilename is responsible to returns the filename.
+    *
+    * @return the filename.
+    */
     public String getFilename()
     {
         return filename;
     }
 
+    /**
+    * getMostExpensiveSaleId is responsible to return the most expensive sale id.
+    *
+    * @return the most expensive sale id.
+    */
     public String getMostExpensiveSaleId()
     {
         return salesData.getMostExpensiveSaleId();
     }
 
+    /**
+    * getWorstSalesman is responsible to return the worst salesman.
+    *
+    * @return the worst salesman.
+    */
     public String getWorstSalesman()
     {
         return salesData.getWorstSalesman();

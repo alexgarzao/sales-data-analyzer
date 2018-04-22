@@ -31,9 +31,9 @@ public class SalesFileTest
     }
 
     /**
-     * Interpreting basic example.
+     * Interpreting basic example 1.
      */
-    public void testInterpretingBasicExample()
+    public void testInterpretingBasicExample1()
     {
         try {
             SalesFile t = new SalesFile("samples/base.done.dat");
@@ -50,7 +50,7 @@ public class SalesFileTest
     }
 
     /**
-     * Interpreting basic example.
+     * Interpreting basic example 2.
      */
     public void testInterpretingBasicExample2()
     {
@@ -67,4 +67,6 @@ public class SalesFileTest
             assertTrue("IO exception!", false);
         }
     }
+
+    // TODO: example with a lot of data.
 }
