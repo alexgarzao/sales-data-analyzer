@@ -27,17 +27,13 @@ public class SalesFile
 {
     private String filename;
     private BufferedReader in;
-    private Map<String, Record> recordTypes;
+    private Salesman salesmanData = new Salesman();
+    private Customer customerData = new Customer();
+    private Sales salesData = new Sales();
 
     public SalesFile(String filename)
     {
         this.filename = filename;
-        recordTypes = new HashMap<String, Record>();
-    }
-
-    public void registryRecordType(Record record)
-    {
-        recordTypes.put(record.getId(), record);
     }
 
     private void open() throws FileNotFoundException
@@ -61,10 +57,21 @@ public class SalesFile
         return in.readLine();
     }
 
+    private Map<String, Record> registryAllRecordTypes()
+    {
+        Map<String, Record> recordTypes = new HashMap<String, Record>();
+        recordTypes.put(salesmanData.getId(), salesmanData);
+        recordTypes.put(customerData.getId(), customerData);
+        recordTypes.put(salesData.getId(), salesData);
+
+        return recordTypes;
+    }
+
     public void process() throws FileNotFoundException, IOException
     {
         open();
 
+        Map<String, Record> recordTypes = registryAllRecordTypes();
         String recordLine = readLine();
         while(recordLine != null) {
             Record record = recordTypes.get(recordLine.substring(0, 3));
@@ -77,12 +84,12 @@ public class SalesFile
 
     public int getTotalSalesman()
     {
-        return recordTypes.get("001").getTotal();
+        return salesmanData.getTotal();
     }
 
     public int getTotalClients()
     {
-        return recordTypes.get("002").getTotal();
+        return customerData.getTotal();
     }
 
     public String getFilename()
@@ -92,13 +99,11 @@ public class SalesFile
 
     public String getMostExpensiveSaleId()
     {
-        Sales sale = (Sales)recordTypes.get("003");
-        return sale.getMostExpensiveSaleId();
+        return salesData.getMostExpensiveSaleId();
     }
 
     public String getWorstSalesman()
     {
-        Sales sale = (Sales)recordTypes.get("003");
-        return sale.getWorstSalesman();
+        return salesData.getWorstSalesman();
     }
 }

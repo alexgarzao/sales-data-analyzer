@@ -37,9 +37,6 @@ public class SalesFileTest
     {
         try {
             SalesFile t = new SalesFile("samples/base.done.dat");
-            t.registryRecordType(new Salesman());
-            t.registryRecordType(new Customer());
-            t.registryRecordType(new Sales());
             t.process();
             assertEquals(t.getTotalSalesman(), 2);
             assertEquals(t.getTotalClients(), 2);
@@ -59,9 +56,6 @@ public class SalesFileTest
     {
         try {
             SalesFile t = new SalesFile("samples/base_2.done.dat");
-            t.registryRecordType(new Salesman());
-            t.registryRecordType(new Customer());
-            t.registryRecordType(new Sales());
             t.process();
             assertEquals(t.getTotalSalesman(), 2);
             assertEquals(t.getTotalClients(), 3);
