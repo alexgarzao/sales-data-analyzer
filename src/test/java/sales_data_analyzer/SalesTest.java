@@ -84,13 +84,13 @@ public class SalesTest
     }
 
     /**
-     * Test validating expected items.
+     * Test validating total sale.
      */
-    public void testValidatingItems()
+    public void testValidatingTotalSale()
     {
         Sales t = new Sales();
         assertTrue(t.parser("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiego"));
-        assertTrue(t.getItems().equals("[1-10-100,2-30-2.50,3-40-3.10]"));
+        assertEquals(t.getTotalSale(), 10*100.0f + 30*2.50f + 40*3.10f);
     }
 
     /**
@@ -111,12 +111,12 @@ public class SalesTest
         Sales t = new Sales();
         assertTrue(t.parser("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiego"));
         assertTrue(t.getSaleId().equals("10"));
-        assertTrue(t.getItems().equals("[1-10-100,2-30-2.50,3-40-3.10]"));
+        assertEquals(t.getTotalSale(), 10*100.0f + 30*2.50f + 40*3.10f);
         assertTrue(t.getSalesman().equals("Diego"));
 
         assertTrue(t.parser("003ç08ç[1-34-10,2-33-1.50,3-40-0.10]çRenato"));
         assertTrue(t.getSaleId().equals("08"));
-        assertTrue(t.getItems().equals("[1-34-10,2-33-1.50,3-40-0.10]"));
+        assertEquals(t.getTotalSale(), 34*10.0f + 33*1.50f + 40*0.10f);
         assertTrue(t.getSalesman().equals("Renato"));
     }
 }
