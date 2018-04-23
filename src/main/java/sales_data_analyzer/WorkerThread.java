@@ -31,8 +31,8 @@ public class WorkerThread implements Runnable {
             SalesFile t = new SalesFile(config.inFilename, config.outFilename, config.bkpFilename);
             t.process();
 
-            LOGGER.info("End file " + config.inFilename);
-            LOGGER.info("Stats file created in " + config.bkpFilename);
+            LOGGER.info(String.format("Moving file %s to %s", config.inFilename, config.bkpFilename));
+            LOGGER.info("Stats file created in " + config.outFilename);
         } catch(RecordInvalidTokenException ex) {
             LOGGER.severe(String.format("Invalid record processing file %s: %s", config.inFilename, ex));
         } catch(FileNotFoundException ex) {

@@ -39,7 +39,7 @@ public class SalesFileTest
             SalesFile t = new SalesFile("samples/data/in/base.dat", "samples/data/out/base.done.dat", "samples/data/proc/base.dat");
             t.process();
             assertEquals(t.getTotalSalesman(), 2);
-            assertEquals(t.getTotalClients(), 2);
+            assertEquals(t.getTotalCustomers(), 2);
             assertEquals(t.getMostExpensiveSaleId(), "10");
             assertEquals(t.getWorstSalesman(), "Renato");
         } catch(RecordInvalidTokenException ex) {
@@ -60,7 +60,7 @@ public class SalesFileTest
             SalesFile t = new SalesFile("samples/data/in/base_2.dat", "samples/data/out/base_2.done.dat", "samples/data/proc/base_2.dat");
             t.process();
             assertEquals(t.getTotalSalesman(), 2);
-            assertEquals(t.getTotalClients(), 3);
+            assertEquals(t.getTotalCustomers(), 3);
             assertEquals(t.getMostExpensiveSaleId(), "08");
             assertEquals(t.getWorstSalesman(), "Diego");
         } catch(RecordInvalidTokenException ex) {
@@ -81,7 +81,7 @@ public class SalesFileTest
             SalesFile t = new SalesFile("samples/data/in/base_3.dat", "samples/data/out/base_3.done.dat", "samples/data/proc/base_3.dat");
             t.process();
             assertEquals(t.getTotalSalesman(), 3);
-            assertEquals(t.getTotalClients(), 4);
+            assertEquals(t.getTotalCustomers(), 4);
             assertEquals(t.getMostExpensiveSaleId(), "08");
             assertEquals(t.getWorstSalesman(), "Alex");
         } catch(RecordInvalidTokenException ex) {
@@ -102,7 +102,7 @@ public class SalesFileTest
             SalesFile t = new SalesFile("samples/data/in/base_4.dat", "samples/data/out/base_4.done.dat", "samples/data/proc/base_4.dat");
             t.process();
             assertEquals(t.getTotalSalesman(), 2);
-            assertEquals(t.getTotalClients(), 4);
+            assertEquals(t.getTotalCustomers(), 4);
             assertEquals(t.getMostExpensiveSaleId(), "10");
             assertEquals(t.getWorstSalesman(), "Renato");
         } catch(RecordInvalidTokenException ex) {
@@ -123,7 +123,7 @@ public class SalesFileTest
             SalesFile t = new SalesFile("samples/data/in/base_with_empty_lines.dat", "samples/data/out/base_with_empty_lines.done.dat", "samples/data/proc/base_with_empty_lines.dat");
             t.process();
             assertEquals(t.getTotalSalesman(), 2);
-            assertEquals(t.getTotalClients(), 2);
+            assertEquals(t.getTotalCustomers(), 2);
             assertEquals(t.getMostExpensiveSaleId(), "10");
             assertEquals(t.getWorstSalesman(), "Renato");
         } catch(RecordInvalidTokenException ex) {
@@ -144,7 +144,7 @@ public class SalesFileTest
             SalesFile t = new SalesFile("samples/data/in/empty_file.dat", "samples/data/out/empty_file.done.dat", "samples/data/proc/empty_file.dat");
             t.process();
             assertEquals(t.getTotalSalesman(), 0);
-            assertEquals(t.getTotalClients(), 0);
+            assertEquals(t.getTotalCustomers(), 0);
             assertEquals(t.getMostExpensiveSaleId(), "");
             assertEquals(t.getWorstSalesman(), "");
         } catch(RecordInvalidTokenException ex) {
@@ -182,7 +182,7 @@ public class SalesFileTest
             SalesFile t = new SalesFile("samples/data/in/base_dos_eol.dat", "samples/data/out/base_dos_eol.done.dat", "samples/data/proc/base_dos_eol.dat");
             t.process();
             assertEquals(t.getTotalSalesman(), 2);
-            assertEquals(t.getTotalClients(), 2);
+            assertEquals(t.getTotalCustomers(), 2);
             assertEquals(t.getMostExpensiveSaleId(), "10");
             assertEquals(t.getWorstSalesman(), "Renato");
         } catch(RecordInvalidTokenException ex) {
