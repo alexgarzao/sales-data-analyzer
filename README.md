@@ -17,7 +17,7 @@ make test
 make run
 ```
 
-After that, all files in "data/in/*.dat" (default) will be interpreted. Stats file will be saved on "data/out", and the original file will be moved to "data/proc". Besides that anyone could see the logs on the console, all logs are keeped in a log file at "data/log/sda.log".
+After that, all files in "data/in/*.dat" (default) will be interpreted. Stats file will be saved on "data/out", and the original file will be moved to "data/proc". Logs are sent to the console and to the log file at "data/log/sda.log".
 
 ## Flat file layout
 
@@ -82,8 +82,8 @@ Stats data has the format id 099 and the line will have the following format.
 
 ## Some design decisions
 
-* 1 thread per file: In my opinion, there are a lot of IO, and just a little of CPU time to process these files. It seems to be a classical IO bound application. With this in mind, it's not necessary to split a huge file and process them in parallel. In Linux, AFAIK, if when one file is open, if is passed a "look ahead" option, the OS do some improvements to speed up the file read.
-* Is prepared to huge files? In my opinion, yes. With these files, the memory consumed to process is proportional to the number of sellers.
+* 1 thread per file: In my opinion, there are a lot of IO, and just a little of CPU time to process these files. It seems to be a classical IO bound application. With this in mind, it's not necessary to split a huge file and process them in parallel. In Linux, AFAIK, if when one file is opened, if is passed a "look ahead" option, the OS do some improvements to speed up this file read.
+* Is prepared to huge files? In my opinion, yes. With these files, the memory consumed to process is proportional to the number of sellers, and isn't proportional to the file size.
 * All the data, during the process, are keeped in memory. With this in mind, wasn't necessary to use a DBMS.
 * The max size of each record line and each token is proportional to the size of a Java string (INT.MAX).
 
@@ -91,12 +91,13 @@ Stats data has the format id 099 and the line will have the following format.
 
 A lot of things in my mind :-)
 
-* If the thread pool queue increase a lot, it's interesting to take a look at this (hint 5): https://www.nurkiewicz.com/2014/11/executorservice-10-tips-and-tricks.html
+* If the thread pool queue increases a lot, it's interesting to take a look at this (hint 5): https://www.nurkiewicz.com/2014/11/executorservice-10-tips-and-tricks.html
 * Check if CPF and CNPJ are valids
-* Check if the salesman, in a sell, are present as a record 002
-* /metrics to responde to some system (like prometheus, for example)
+* Check if the salesmans, in a sell, are present as a record 002
+* /metrics to response to some system (like prometheus, for example)
 * Capture CTRL+C
 * Lint tools, code coverage, ...
 * Docker
 * Pass arguments throw command line
 * Functional tests with huges files
+* ...
