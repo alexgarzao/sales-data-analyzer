@@ -16,7 +16,7 @@ import java.nio.file.StandardCopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
+import java.util.logging.Logger;
 
 /**
 * SalesFile class is responsible to parser and keep the stats data.
@@ -26,12 +26,16 @@ import java.nio.file.Paths;
 */
 public class SalesFile
 {
+    private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
     private String inFilename;
     private String outFilename;
     private String bkpFilename;
     private Salesman salesmanData = new Salesman();
     private Customer customerData = new Customer();
     private Sales salesData = new Sales();
+    private long spentTimeToProcess;
+    private long fileLines;
 
     /**
     * SalesFile is responsible to define the file to be parsed.
@@ -64,6 +68,8 @@ public class SalesFile
     */
     public void process() throws FileNotFoundException, IOException, RecordInvalidTokenException
     {
+        long startTime = System.currentTimeMillis();
+
         BufferedInputStream bf = new BufferedInputStream(new FileInputStream(inFilename));
         BufferedReader in = new BufferedReader(new InputStreamReader(bf, StandardCharsets.UTF_8));
 
@@ -73,6 +79,8 @@ public class SalesFile
         recordLine = in.readLine();
 
         while(recordLine != null) {
+            fileLines += 1;
+
             if (recordLine.isEmpty()) {
                 recordLine = in.readLine();
                 continue;
@@ -80,7 +88,6 @@ public class SalesFile
             try {
                 String formatId = recordLine.substring(0, 3);
                 Record record = recordTypes.get(formatId);
-                // TODO: and if the formatId doesn't exist?
                 record.parser(recordLine);
                 if (formatId.equals("001")) {
                     salesData.addNewSalesman(salesmanData.getName());
@@ -92,11 +99,16 @@ public class SalesFile
             recordLine = in.readLine();
         }
 
+        bf.close();
         in.close();
+
+        spentTimeToProcess = System.currentTimeMillis() - startTime;
 
         saveFileStats();
 
         doFileBackup();
+
+        logStats();
     }
 
     /**
@@ -110,13 +122,23 @@ public class SalesFile
     }
 
     /**
-    * getTotalClientes is responsible to return the total of clients.
+    * getTotalCustomers is responsible to return the total of customers.
     *
-    * @return the total of salesman.
+    * @return the total of customers.
     */
-    public int getTotalClients()
+    public int getTotalCustomers()
     {
         return customerData.getTotal();
+    }
+
+    /**
+    * getTotalSales is responsible to return the total of sales.
+    *
+    * @return the total of sales.
+    */
+    public int getTotalSales()
+    {
+        return salesData.getTotal();
     }
 
     /**
@@ -142,18 +164,13 @@ public class SalesFile
     /**
     * TODO is responsible to return the worst salesman.
     *
-    * Format: 099çTotalSalesMançTotalClientsçMostExpensiveSaleIdçWorstSalesman
+    * Format: 099çTotalSalesMançTotalCustomersçMostExpensiveSaleIdçWorstSalesman
     * @return the worst salesman.
     */
     public void saveFileStats() throws IOException {
-        // System.out.println("TotalSalesman: " + t.getTotalSalesman());
-        // System.out.println("TotalClients: " + t.getTotalClients());
-        // System.out.println("MostExpensiveSaleId: " + t.getMostExpensiveSaleId());
-        // System.out.println("WorstSalesman: " + t.getWorstSalesman());
-
         StringBuilder str = new StringBuilder("099");
         str.append("ç" + getTotalSalesman());
-        str.append("ç" + getTotalClients());
+        str.append("ç" + getTotalCustomers());
         str.append("ç" + getMostExpensiveSaleId());
         str.append("ç" + getWorstSalesman());
         str.append('\n');
@@ -164,7 +181,7 @@ public class SalesFile
         writer.close();
     }
 
-    public void doFileBackup()
+    private void doFileBackup()
     {
         Path source = Paths.get(inFilename);
         Path target = Paths.get(bkpFilename);
@@ -174,5 +191,22 @@ public class SalesFile
         } catch (Exception ex) {
             // TODO
         }
+    }
+
+    private void logStats()
+    {
+        LOGGER.info(String.format(
+            "File: %s TimeToProcess: %d Lines: %d TotalSalesman: %d TotalCustomers: %d TotalSales: %d",
+            inFilename, getSpentTimeToProcess(), getFileLines(), getTotalSalesman(), getTotalCustomers(), getTotalSales()));
+    }
+
+    private long getSpentTimeToProcess()
+    {
+        return spentTimeToProcess;
+    }
+
+    private long getFileLines()
+    {
+        return fileLines;
     }
 }
