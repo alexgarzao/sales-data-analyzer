@@ -10,7 +10,7 @@ Simple sales data analyzer, 100% coded in Java.
 ## How to use
 
 ```
-git clone XXX
+git clone https://github.com/alexgarzao/sales-data-analyzer.git
 cd sales-data-analyzer
 make test
 
@@ -72,6 +72,12 @@ The output file contents should summarize the following data:
 * Amount of salesman in the input file
 * ID of the most expensive sale
 * Worst salesman ever
+
+Stats data has the format id 099 and the line will have the following format.
+
+```
+099çTotalSalesMançTotalCustomersçMostExpensiveSaleIdçWorstSalesman
+```
 
 
 ## Some design decisions
