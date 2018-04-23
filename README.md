@@ -5,7 +5,7 @@ Simple sales data analyzer, 100% coded in Java.
 ## Requirements
 
 * maven
-* java versao 1.8 or greather
+* java version 1.8 or greather
 
 ## How to use
 
