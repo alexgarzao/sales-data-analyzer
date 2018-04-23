@@ -1,13 +1,10 @@
 package sales_data_analyzer;
 
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.io.IOException;
-import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
-import java.nio.file.WatchEvent.Kind;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.nio.file.DirectoryStream;
@@ -15,12 +12,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.logging.Logger;
 
-
 /**
-* TODO class is responsible to parser data records.
+* FileWatcher class is responsible to find new files to be processed.
 *
 * @author  Alex S. Garzão
-* @version 0.1
 */
 public class FileWatcher
 {
@@ -48,7 +43,7 @@ public class FileWatcher
     }
 
     /**
-    * TODO is responsible to extract the data from a file line.
+    * start is responsible to monitore the filesystem for new files.
     *
     * @param data contains the data to be parsed.
     * @return true if the data could be parsed,
@@ -70,7 +65,7 @@ public class FileWatcher
                     addWork(path.toString());
                 }
             } catch (IOException ex) {
-                // TODO
+                LOGGER.severe("When trying to scan the folder: " + ex.toString());
             }
 
             // Loop forever to watch directory.
@@ -97,7 +92,7 @@ public class FileWatcher
             LOGGER.warning("WatchKey interrupted... bye...");
             return;
         } catch (IOException ex) {
-            ex.printStackTrace();  // TODO: don't do this in production code. Use a loggin framework
+            LOGGER.severe(ex.getStackTrace().toString());
             return;
         }
     }
@@ -111,7 +106,7 @@ public class FileWatcher
             Files.createDirectories(Paths.get("data/log"));
         } catch(IOException ex)
         {
-            // TODO
+            LOGGER.severe("When trying to create default paths: " + ex.toString());
         }
     }
 }

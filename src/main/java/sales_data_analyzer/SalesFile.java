@@ -22,7 +22,6 @@ import java.util.logging.Logger;
 * SalesFile class is responsible to parser and keep the stats data.
 *
 * @author  Alex S. Garzão
-* @version 0.1
 */
 public class SalesFile
 {
@@ -189,7 +188,7 @@ public class SalesFile
         try {
             Files.move(source, target, StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception ex) {
-            // TODO
+            LOGGER.severe("When trying to move the file: " + ex.toString());
         }
     }
 

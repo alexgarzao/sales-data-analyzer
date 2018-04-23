@@ -12,6 +12,9 @@ public class CustomerTest
 {
     private Customer t;
 
+    /**
+     * Test setup.
+     */
     protected void setUp()
     {
         t = new Customer();
@@ -35,7 +38,10 @@ public class CustomerTest
         return new TestSuite( CustomerTest.class );
     }
 
-    private void parserWithExceptionExpected(String recordLine) {
+    /**
+     * Assert that a RecordInvalidTokenException will happen.
+     */
+    private void assertRecordInvalidTokenException(String recordLine) {
         try {
             t.parser(recordLine);
             assertTrue("Must be an invalid record!", false);
@@ -52,12 +58,12 @@ public class CustomerTest
     }
 
     /**
-     * Validating correct format ID.
+     * Validating incorrect format ID.
      */
     public void testWithInvalidFormatId()
     {
-        parserWithExceptionExpected("001ç12345678901234çName 1çBusiness area 1");
-        parserWithExceptionExpected("003ç12345678901234çName 1çBusiness area 1");
+        assertRecordInvalidTokenException("001ç12345678901234çName 1çBusiness area 1");
+        assertRecordInvalidTokenException("003ç12345678901234çName 1çBusiness area 1");
     }
 
     /**
@@ -65,12 +71,12 @@ public class CustomerTest
      */
     public void testWithLessDataThanNecessary()
     {
-        parserWithExceptionExpected("002ç12345678901234çName 1ç");
-        parserWithExceptionExpected("002ç12345678901234çName 1");
-        parserWithExceptionExpected("002ç12345678901234ç");
-        parserWithExceptionExpected("002ç12345678901234");
-        parserWithExceptionExpected("002ç");
-        parserWithExceptionExpected("002");
+        assertRecordInvalidTokenException("002ç12345678901234çName 1ç");
+        assertRecordInvalidTokenException("002ç12345678901234çName 1");
+        assertRecordInvalidTokenException("002ç12345678901234ç");
+        assertRecordInvalidTokenException("002ç12345678901234");
+        assertRecordInvalidTokenException("002ç");
+        assertRecordInvalidTokenException("002");
     }
 
     /**
@@ -78,9 +84,9 @@ public class CustomerTest
      */
     public void testWithMoreDataThanNecessary()
     {
-        parserWithExceptionExpected("002ç12345678901234çName 1çName 1ç12");
-        parserWithExceptionExpected("002ç12345678901234çName 1çName 1çAç");
-        parserWithExceptionExpected("002ç12345678901234çName 1çName 1çAç12");
+        assertRecordInvalidTokenException("002ç12345678901234çName 1çName 1ç12");
+        assertRecordInvalidTokenException("002ç12345678901234çName 1çName 1çAç");
+        assertRecordInvalidTokenException("002ç12345678901234çName 1çName 1çAç12");
     }
 
     /**

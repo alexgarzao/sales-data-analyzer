@@ -3,12 +3,10 @@ package sales_data_analyzer;
 import java.util.HashMap;
 import java.util.Map;
 
-
 /**
 * Sales class is responsible to parser and keep the sales data.
 *
 * @author  Alex S. Garzão
-* @version 0.1
 */
 public class Sales extends Record
 {

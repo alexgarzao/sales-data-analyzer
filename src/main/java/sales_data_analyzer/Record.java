@@ -4,7 +4,6 @@ package sales_data_analyzer;
 * Record class is responsible to parser data records.
 *
 * @author  Alex S. Garzão
-* @version 0.1
 */
 public class Record
 {

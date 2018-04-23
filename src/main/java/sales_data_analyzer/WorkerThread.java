@@ -4,6 +4,11 @@ import java.io.IOException;
 import java.io.FileNotFoundException;
 import java.util.logging.Logger;
 
+/**
+* @author: Alex S. Garzão
+*
+* WorkerThread class. A worker thread.
+*/
 public class WorkerThread implements Runnable {
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 

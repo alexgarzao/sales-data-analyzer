@@ -6,6 +6,11 @@ import java.util.logging.ConsoleHandler;
 import java.util.logging.SimpleFormatter;
 import java.util.logging.LogRecord;
 
+/**
+* @author: Alex S. Garzão
+*
+* LoggerConfig class. Build the logger config.
+*/
 public class LoggerConfig {
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private ConsoleHandler ch = null;
@@ -30,6 +35,9 @@ public class LoggerConfig {
 }
 
 
+/**
+* MyFormatter class. Custom logger formatter.
+*/
 class MyFormatter extends SimpleFormatter{
     @Override
     public synchronized String format(LogRecord record) {

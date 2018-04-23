@@ -28,7 +28,10 @@ public class RecordTest
         return new TestSuite( RecordTest.class );
     }
 
-    private void parserWithExceptionExpected(Record t, String recordLine) {
+    /**
+     * Assert that a RecordInvalidTokenException will happen.
+     */
+    private void assertRecordInvalidTokenException(Record t, String recordLine) {
         try {
             t.parser(recordLine);
             assertTrue("Must be an invalid record!", false);
@@ -60,16 +63,16 @@ public class RecordTest
     public void testWithInvalidFormatId()
     {
         Record t = new Record("001", 4);
-        parserWithExceptionExpected(t, "002ç1234567891234çDiegoç50000");
-        parserWithExceptionExpected(t, "003ç3245678865434çRenatoç40000.99");
+        assertRecordInvalidTokenException(t, "002ç1234567891234çDiegoç50000");
+        assertRecordInvalidTokenException(t, "003ç3245678865434çRenatoç40000.99");
 
         t = new Record("002", 4);
-        parserWithExceptionExpected(t, "001ç2345675434544345çJosedaSilvaçRural");
-        parserWithExceptionExpected(t, "003ç2345675433444345çEduardoPereiraçRural");
+        assertRecordInvalidTokenException(t, "001ç2345675434544345çJosedaSilvaçRural");
+        assertRecordInvalidTokenException(t, "003ç2345675433444345çEduardoPereiraçRural");
 
         t = new Record("003", 4);
-        parserWithExceptionExpected(t, "001ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiego");
-        parserWithExceptionExpected(t, "002ç08ç[1-34-10,2-33-1.50,3-40-0.10]çRenato");
+        assertRecordInvalidTokenException(t, "001ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiego");
+        assertRecordInvalidTokenException(t, "002ç08ç[1-34-10,2-33-1.50,3-40-0.10]çRenato");
     }
 
     /**
@@ -78,12 +81,12 @@ public class RecordTest
     public void testWithLessDataThanNecessary()
     {
         Record t = new Record("001", 4);
-        parserWithExceptionExpected(t, "001ç12345678901çName 1ç");
-        parserWithExceptionExpected(t, "001ç12345678901çName 1");
-        parserWithExceptionExpected(t, "001ç12345678901ç");
-        parserWithExceptionExpected(t, "001ç12345678901");
-        parserWithExceptionExpected(t, "001ç");
-        parserWithExceptionExpected(t, "001");
+        assertRecordInvalidTokenException(t, "001ç12345678901çName 1ç");
+        assertRecordInvalidTokenException(t, "001ç12345678901çName 1");
+        assertRecordInvalidTokenException(t, "001ç12345678901ç");
+        assertRecordInvalidTokenException(t, "001ç12345678901");
+        assertRecordInvalidTokenException(t, "001ç");
+        assertRecordInvalidTokenException(t, "001");
     }
 
     /**
@@ -92,9 +95,9 @@ public class RecordTest
     public void testWithMoreDataThanNecessary()
     {
         Record t = new Record("001", 4);
-        parserWithExceptionExpected(t, "001ç12345678901çName 1ç123456.78ç12");
-        parserWithExceptionExpected(t, "001ç12345678901çName 1ç123456.78çAç");
-        parserWithExceptionExpected(t, "001ç12345678901çName 1ç123456.78çAç12");
+        assertRecordInvalidTokenException(t, "001ç12345678901çName 1ç123456.78ç12");
+        assertRecordInvalidTokenException(t, "001ç12345678901çName 1ç123456.78çAç");
+        assertRecordInvalidTokenException(t, "001ç12345678901çName 1ç123456.78çAç12");
     }
 
     /**

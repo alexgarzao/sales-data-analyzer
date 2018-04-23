@@ -12,6 +12,9 @@ public class SalesTest
 {
     private Sales t;
 
+    /**
+     * Test setup.
+     */
     protected void setUp()
     {
         t = new Sales();
@@ -35,7 +38,10 @@ public class SalesTest
         return new TestSuite( SalesTest.class );
     }
 
-    private void parserWithExceptionExpected(String recordLine) {
+    /**
+     * Assert that a RecordInvalidTokenException will happen.
+     */
+    private void assertRecordInvalidTokenException(String recordLine) {
         try {
             t.parser(recordLine);
             assertTrue("Must be an invalid record!", false);
@@ -57,8 +63,8 @@ public class SalesTest
      */
     public void testWithInvalidFormatId()
     {
-        parserWithExceptionExpected("001ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiego");
-        parserWithExceptionExpected("002ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiego");
+        assertRecordInvalidTokenException("001ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiego");
+        assertRecordInvalidTokenException("002ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiego");
     }
 
     /**
@@ -66,12 +72,12 @@ public class SalesTest
      */
     public void testWithLessDataThanNecessary()
     {
-        parserWithExceptionExpected("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]ç");
-        parserWithExceptionExpected("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]");
-        parserWithExceptionExpected("003ç10ç");
-        parserWithExceptionExpected("003ç10");
-        parserWithExceptionExpected("003ç");
-        parserWithExceptionExpected("003");
+        assertRecordInvalidTokenException("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]ç");
+        assertRecordInvalidTokenException("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]");
+        assertRecordInvalidTokenException("003ç10ç");
+        assertRecordInvalidTokenException("003ç10");
+        assertRecordInvalidTokenException("003ç");
+        assertRecordInvalidTokenException("003");
     }
 
     /**
@@ -79,9 +85,9 @@ public class SalesTest
      */
     public void testWithMoreDataThanNecessary()
     {
-        parserWithExceptionExpected("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiegoçA");
-        parserWithExceptionExpected("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiegoçAç");
-        parserWithExceptionExpected("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiegoçAç12");
+        assertRecordInvalidTokenException("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiegoçA");
+        assertRecordInvalidTokenException("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiegoçAç");
+        assertRecordInvalidTokenException("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiegoçAç12");
     }
 
     /**

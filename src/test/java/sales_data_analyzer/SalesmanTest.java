@@ -12,6 +12,9 @@ public class SalesmanTest
 {
     private Salesman t;
 
+    /**
+     * Test setup.
+     */
     protected void setUp()
     {
         t = new Salesman();
@@ -35,7 +38,10 @@ public class SalesmanTest
         return new TestSuite( SalesmanTest.class );
     }
 
-    private void parserWithExceptionExpected(String recordLine) {
+    /**
+     * Assert that a RecordInvalidTokenException will happen.
+     */
+    private void assertRecordInvalidTokenException(String recordLine) {
         try {
             t.parser(recordLine);
             assertTrue("Must be an invalid record!", false);
@@ -56,8 +62,8 @@ public class SalesmanTest
      */
     public void testWithInvalidFormatId()
     {
-        parserWithExceptionExpected("002ç12345678901çName 1ç123456.78");
-        parserWithExceptionExpected("003ç12345678901çName 1ç123456.78");
+        assertRecordInvalidTokenException("002ç12345678901çName 1ç123456.78");
+        assertRecordInvalidTokenException("003ç12345678901çName 1ç123456.78");
     }
 
     /**
@@ -65,12 +71,12 @@ public class SalesmanTest
      */
     public void testWithLessDataThanNecessary()
     {
-        parserWithExceptionExpected("001ç12345678901çName 1ç");
-        parserWithExceptionExpected("001ç12345678901çName 1");
-        parserWithExceptionExpected("001ç12345678901ç");
-        parserWithExceptionExpected("001ç12345678901");
-        parserWithExceptionExpected("001ç");
-        parserWithExceptionExpected("001");
+        assertRecordInvalidTokenException("001ç12345678901çName 1ç");
+        assertRecordInvalidTokenException("001ç12345678901çName 1");
+        assertRecordInvalidTokenException("001ç12345678901ç");
+        assertRecordInvalidTokenException("001ç12345678901");
+        assertRecordInvalidTokenException("001ç");
+        assertRecordInvalidTokenException("001");
     }
 
     /**
@@ -78,9 +84,9 @@ public class SalesmanTest
      */
     public void testWithMoreDataThanNecessary()
     {
-        parserWithExceptionExpected("001ç12345678901çName 1ç123456.78ç12");
-        parserWithExceptionExpected("001ç12345678901çName 1ç123456.78çAç");
-        parserWithExceptionExpected("001ç12345678901çName 1ç123456.78çAç12");
+        assertRecordInvalidTokenException("001ç12345678901çName 1ç123456.78ç12");
+        assertRecordInvalidTokenException("001ç12345678901çName 1ç123456.78çAç");
+        assertRecordInvalidTokenException("001ç12345678901çName 1ç123456.78çAç12");
     }
 
     /**
@@ -121,8 +127,8 @@ public class SalesmanTest
      */
     public void testWithInvalidSalary()
     {
-        parserWithExceptionExpected("001ç12345678901çName 1ç123A45");
-        parserWithExceptionExpected("001ç12345678901çName 1ç123,45");
+        assertRecordInvalidTokenException("001ç12345678901çName 1ç123A45");
+        assertRecordInvalidTokenException("001ç12345678901çName 1ç123,45");
     }
 
     /**
