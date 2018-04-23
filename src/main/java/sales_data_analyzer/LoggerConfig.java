@@ -35,7 +35,9 @@ class MyFormatter extends SimpleFormatter{
     public synchronized String format(LogRecord record) {
         record.setSourceClassName(MyFormatter.class.getName());
         return String.format(
-            "[%1$s] :%2$s\n",
-            record.getLevel().getName(), formatMessage(record));
+            "[%1$s]: %2$s - %3$s\n",
+            record.getLevel().getName(),
+            Thread.currentThread().getName(),
+            formatMessage(record));
     }
 }
