@@ -69,9 +69,14 @@ public class SalesFile
 
         Map<String, Record> recordTypes = mapAllRecordTypes();
 
-        String recordLine = in.readLine();
+        String recordLine;
+        recordLine = in.readLine();
 
         while(recordLine != null) {
+            if (recordLine.isEmpty()) {
+                recordLine = in.readLine();
+                continue;
+            }
             String formatId = recordLine.substring(0, 3);
             Record record = recordTypes.get(formatId);
             // TODO: and if the formatId doesn't exist?
@@ -79,6 +84,7 @@ public class SalesFile
             if (formatId.equals("001")) {
                 salesData.addNewSalesman(salesmanData.getName());
             }
+            
             recordLine = in.readLine();
         }
 
