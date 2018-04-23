@@ -69,6 +69,7 @@ public class Sales extends Record
         double totalSale = 0d;
 
         for (int itemNumber = 0; itemNumber < itemList.length; itemNumber++) {
+            // Item format: ItemID-ItemQuantity-ItemPrice
             final String FIELDS_DELIMITER = "-";
             final int FIELDS_COUNT = 3;
             final int QUANTITY_INDEX = 1;

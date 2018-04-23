@@ -28,17 +28,21 @@ public class Salesman extends Record
     */
     public void parser(String data) throws RecordInvalidTokenException
     {
+        final int CPF_INDEX = 1;
+        final int NAME_INDEX = 2;
+        final int SALARY_INDEX = 3;
+
         CPF = "";
         name = "";
         salary = 0;
 
         super.parser(data);
 
-        CPF = tokens[1];
-        name = tokens[2];
+        CPF = tokens[CPF_INDEX];
+        name = tokens[NAME_INDEX];
 
         try {
-            salary = Double.parseDouble(tokens[3]);
+            salary = Double.parseDouble(tokens[SALARY_INDEX]);
         } catch (NumberFormatException e) {
             throw new RecordInvalidTokenException();
         }
