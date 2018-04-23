@@ -107,10 +107,10 @@ public class SalesmanTest
     public void testValidatingSalary() throws RecordInvalidTokenException
     {
         t.parser("001ç12345678901çName 1ç123456.78");
-        assertTrue(t.getSalary() == 123456.78f);
+        assertTrue(t.getSalary() == 123456.78d);
 
         t.parser("001ç12345678901çName 1ç12345");
-        assertTrue(t.getSalary() == 12345f);
+        assertTrue(t.getSalary() == 12345d);
 
         t.parser("001ç12345678901çName 1ç12345");
         assertTrue(t.getSalary() == 12345);
@@ -133,11 +133,11 @@ public class SalesmanTest
         t.parser("001ç1234567891234çDiegoç50000");
         assertEquals(t.getCPF(), "1234567891234");
         assertEquals(t.getName(), "Diego");
-        assertEquals(t.getSalary(), 50000f);
+        assertEquals(t.getSalary(), 50000d);
 
         t.parser("001ç3245678865434çRenatoç40000.99");
         assertEquals(t.getCPF(), "3245678865434");
         assertEquals(t.getName(), "Renato");
-        assertEquals(t.getSalary(), 40000.99f);
+        assertEquals(t.getSalary(), 40000.99d);
     }
 }

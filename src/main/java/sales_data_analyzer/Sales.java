@@ -14,12 +14,12 @@ public class Sales extends Record
 {
     private String saleId;
     private String salesman;
-    private float totalSale;
+    private double totalSale;
 
-    private float mostExpensiveSaleTotal = 0f;
+    private double mostExpensiveSaleTotal = 0d;
     private String mostExpensiveSaleId = "";
 
-    private Map<String, Float> salesPerSeller = new HashMap<String, Float>();
+    private Map<String, Double> salesPerSeller = new HashMap<String, Double>();
 
     public Sales()
     {
@@ -52,14 +52,14 @@ public class Sales extends Record
             mostExpensiveSaleId = saleId;
         }
 
-        float salesmanTotal = salesPerSeller.getOrDefault(salesman, 0f);
+        double salesmanTotal = salesPerSeller.getOrDefault(salesman, 0d);
         salesmanTotal += totalSale;
         salesPerSeller.put(salesman, salesmanTotal);
     }
 
     // [ItemID-ItemQuantity-ItemPrice]
     // Example: [1-10-100,2-30-2.50,3-40-3.10]
-    private float calcTotalSaleFromItems(String items)
+    private double calcTotalSaleFromItems(String items)
     {
         if (items.charAt(0) != '[') {
             return 0;
@@ -69,7 +69,7 @@ public class Sales extends Record
             return 0;
         }
 
-        float totalSale = 0;
+        double totalSale = 0d;
         String itemList[] = items.substring(1, items.length() - 2).split(",");
 
         for (int itemNumber = 0; itemNumber < itemList.length; itemNumber++) {
@@ -78,8 +78,8 @@ public class Sales extends Record
                 return 0;
             }
 
-            float quantity = Float.parseFloat(tokens[1]);
-            float value = Float.parseFloat(tokens[2]);
+            double quantity = Double.parseDouble(tokens[1]);
+            double value = Double.parseDouble(tokens[2]);
 
             totalSale += (quantity * value);
         }
@@ -92,7 +92,7 @@ public class Sales extends Record
         return saleId;
     }
 
-    public float getTotalSale()
+    public double getTotalSale()
     {
         return totalSale;
     }
@@ -109,15 +109,15 @@ public class Sales extends Record
 
     public void addNewSalesman(String salesmanName)
     {
-        salesPerSeller.putIfAbsent(salesmanName, 0f);
+        salesPerSeller.putIfAbsent(salesmanName, 0d);
     }
 
     public String getWorstSalesman()
     {
-        float worstTotal = Float.MAX_VALUE;
+        double worstTotal = Double.MAX_VALUE;
         String salesman = "";
 
-        for (Map.Entry<String, Float> pair : salesPerSeller.entrySet()) {
+        for (Map.Entry<String, Double> pair : salesPerSeller.entrySet()) {
             if (pair.getValue() < worstTotal) {
                 worstTotal = pair.getValue();
                 salesman = pair.getKey();

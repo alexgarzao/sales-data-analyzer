@@ -10,7 +10,7 @@ public class Salesman extends Record
 {
     private String CPF;
     private String name;
-    private float salary;
+    private double salary;
 
     public Salesman()
     {
@@ -36,7 +36,7 @@ public class Salesman extends Record
         name = tokens[2];
 
         try {
-            salary = Float.parseFloat(tokens[3]);
+            salary = Double.parseDouble(tokens[3]);
         } catch (NumberFormatException e) {
             throw new RecordInvalidTokenException();
         }
@@ -52,7 +52,7 @@ public class Salesman extends Record
         return name;
     }
 
-    public float getSalary()
+    public double getSalary()
     {
         return salary;
     }

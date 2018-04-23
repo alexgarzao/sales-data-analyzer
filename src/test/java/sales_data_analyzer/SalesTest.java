@@ -99,7 +99,7 @@ public class SalesTest
     public void testValidatingTotalSale() throws RecordInvalidTokenException
     {
         t.parser("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiego");
-        assertEquals(t.getTotalSale(), 10*100.0f + 30*2.50f + 40*3.10f);
+        assertEquals(t.getTotalSale(), 10*100.0d + 30*2.50d + 40*3.10d);
     }
 
     /**
@@ -118,12 +118,12 @@ public class SalesTest
     {
         t.parser("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiego");
         assertTrue(t.getSaleId().equals("10"));
-        assertEquals(t.getTotalSale(), 10*100.0f + 30*2.50f + 40*3.10f);
+        assertEquals(t.getTotalSale(), 10*100.0d + 30*2.50d + 40*3.10d);
         assertTrue(t.getSalesman().equals("Diego"));
 
         t.parser("003ç08ç[1-34-10,2-33-1.50,3-40-0.10]çRenato");
         assertTrue(t.getSaleId().equals("08"));
-        assertEquals(t.getTotalSale(), 34*10.0f + 33*1.50f + 40*0.10f);
+        assertEquals(t.getTotalSale(), 34*10.0d + 33*1.50d + 40*0.10d);
         assertTrue(t.getSalesman().equals("Renato"));
     }
 }
