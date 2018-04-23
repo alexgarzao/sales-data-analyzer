@@ -13,6 +13,8 @@ import java.nio.file.WatchService;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.logging.Logger;
+
 
 /**
 * TODO class is responsible to parser data records.
@@ -22,6 +24,8 @@ import java.nio.file.Paths;
 */
 public class FileWatcher
 {
+    private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
     private Path path;
     private ExecutorService executor;
 
@@ -83,14 +87,14 @@ public class FileWatcher
 
                 // If the watched directed gets deleted, get out of run method.
                 if (!watchKey.reset()) {
-                    System.out.println("No longer valid");
+                    LOGGER.warning("WatchKey no longer valid");
                     watchKey.cancel();
                     watchService.close();
                     break;
                 }
            }
        } catch (InterruptedException ex) {
-            System.out.println("interrupted. Goodbye");
+            LOGGER.warning("WatchKey interrupted... bye...");
             return;
         } catch (IOException ex) {
             ex.printStackTrace();  // TODO: don't do this in production code. Use a loggin framework

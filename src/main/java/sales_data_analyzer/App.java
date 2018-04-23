@@ -17,14 +17,15 @@ public class App
 
     public static void main( String[] args )
     {
-        new LoggerConfig("sda.log");
+        new LoggerConfig("data/log/sda.log");
 
         LOGGER.info("Starting Sales Data Analyzer 0.1");
-        LOGGER.info("Starting Sales Data Analyzer 0.2");
 
         // TODO: define the correct thread pool size bellow.
         ExecutorService executor = Executors.newFixedThreadPool(2);
         FileWatcher fileWatcher = new FileWatcher(Paths.get("./data/in"), executor);
         fileWatcher.start();
+
+        LOGGER.info("Ending Sales Data Analyzer 0.1");
     }
 }
