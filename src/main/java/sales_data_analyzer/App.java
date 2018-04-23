@@ -30,7 +30,7 @@ public class App
 
     private static void loggerConfig()
     {
-        new LoggerConfig(AppConfig.logPath + "/" + AppConfig.logFilename);
+        new LoggerConfig(AppConfig.logPath + AppConfig.logFilename);
     }
 
     private static void startThreadPoolAndFileWatcher()
