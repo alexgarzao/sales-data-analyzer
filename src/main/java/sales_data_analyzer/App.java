@@ -4,6 +4,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import java.nio.file.Paths;
+import java.util.logging.Logger;
 
 /**
 * @author: Alex S. Garzão
@@ -12,9 +13,14 @@ import java.nio.file.Paths;
 */
 public class App
 {
+    private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
     public static void main( String[] args )
     {
-        System.out.println("Starting Sales Data Analyzer 0.1");
+        new LoggerConfig("sda.log");
+
+        LOGGER.info("Starting Sales Data Analyzer 0.1");
+        LOGGER.info("Starting Sales Data Analyzer 0.2");
 
         // TODO: define the correct thread pool size bellow.
         ExecutorService executor = Executors.newFixedThreadPool(2);
