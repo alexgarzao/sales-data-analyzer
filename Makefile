@@ -15,5 +15,7 @@ clean:
 	rm -f data/proc/*
 
 prepdata:
+	mkdir -p samples/data/in
+	mkdir -p data/in
 	cp samples/test/* samples/data/in
 	cp samples/test/* data/in
