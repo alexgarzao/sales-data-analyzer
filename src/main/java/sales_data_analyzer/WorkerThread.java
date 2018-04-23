@@ -36,7 +36,7 @@ public class WorkerThread implements Runnable
         String bkpFilename = AppConfig.getBkpFilename(inFilename);
 
         try {
-            SalesFile t = new SalesFile(inFilename, outFilename, bkpFilename);
+            ProcessSalesFile t = new ProcessSalesFile(inFilename, outFilename, bkpFilename);
             t.process();
         } catch(RecordInvalidTokenException ex) {
             LOGGER.severe(String.format("Invalid record processing file %s: %s", inFilename, ex));
