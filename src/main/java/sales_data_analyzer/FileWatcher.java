@@ -23,12 +23,16 @@ public class FileWatcher
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     private Path path;
+    private String fileSuffixToProcess;
     private ExecutorService executor;
+    private String inPath;
 
-    public FileWatcher(Path path, ExecutorService executor)
+    public FileWatcher(Path path, String fileSuffixToProcess, ExecutorService executor)
     {
         this.path = path;
+        this.fileSuffixToProcess = fileSuffixToProcess;
         this.executor = executor;
+        this.inPath = path.toString();
     }
 
     private void addWork(String inFilename)
@@ -46,8 +50,6 @@ public class FileWatcher
     */
     public void start()
     {
-        createDefaultDataDirs();
-
         try {
             // INotify config to watch for files in a specific filepath.
             WatchService watchService = path.getFileSystem().newWatchService();
@@ -62,8 +64,8 @@ public class FileWatcher
 
                 // Poll for file system events on the WatchKey.
                 for (final WatchEvent<?> event : watchKey.pollEvents()) {
-                    if (event.context().toString().endsWith(AppConfig.fileSuffixToProcess)) {
-                        addWork(AppConfig.inPath + "/" + event.context());
+                    if (event.context().toString().endsWith(fileSuffixToProcess)) {
+                        addWork(inPath + "/" + event.context());
                     }
                 }
 
@@ -84,18 +86,6 @@ public class FileWatcher
         }
     }
 
-    private void createDefaultDataDirs()
-    {
-        try {
-            Files.createDirectories(Paths.get(AppConfig.inPath));
-            Files.createDirectories(Paths.get(AppConfig.outPath));
-            Files.createDirectories(Paths.get(AppConfig.procPath));
-            Files.createDirectories(Paths.get(AppConfig.logPath));
-        } catch(IOException ex) {
-            LOGGER.severe("When trying to create default paths: " + ex.toString());
-        }
-    }
-
     /**
     * readFilesFromPath is responsible to read all the files from path, once
     *                   on the startup.
@@ -104,7 +94,7 @@ public class FileWatcher
     {
         try {
             DirectoryStream<Path> directoryStream = Files.newDirectoryStream(
-                Paths.get(AppConfig.inPath), AppConfig.getMaskToWatch());
+                Paths.get(inPath), "*" + fileSuffixToProcess);
             for (Path path : directoryStream) {
                 addWork(path.toString());
             }

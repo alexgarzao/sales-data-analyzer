@@ -5,6 +5,8 @@ import java.util.concurrent.Executors;
 
 import java.nio.file.Paths;
 import java.util.logging.Logger;
+import java.nio.file.Files;
+import java.io.IOException;
 
 /**
 * @author: Alex S. Garzão
@@ -22,6 +24,7 @@ public class App
         LOGGER.info("Starting Sales Data Analyzer 0.1");
         LOGGER.info("Current config is " + AppConfig.toLog());
 
+        createDefaultDataDirs();
         startThreadPoolAndFileWatcher();
     }
 
@@ -33,7 +36,19 @@ public class App
     private static void startThreadPoolAndFileWatcher()
     {
         ExecutorService executor = Executors.newFixedThreadPool(AppConfig.maxWorkers);
-        FileWatcher fileWatcher = new FileWatcher(Paths.get(AppConfig.inPath), executor);
+        FileWatcher fileWatcher = new FileWatcher(Paths.get(AppConfig.inPath), AppConfig.fileSuffixToProcess, executor);
         fileWatcher.start();
+    }
+
+    private static void createDefaultDataDirs()
+    {
+        try {
+            Files.createDirectories(Paths.get(AppConfig.inPath));
+            Files.createDirectories(Paths.get(AppConfig.outPath));
+            Files.createDirectories(Paths.get(AppConfig.procPath));
+            Files.createDirectories(Paths.get(AppConfig.logPath));
+        } catch(IOException ex) {
+            LOGGER.severe("When trying to create default paths: " + ex.toString());
+        }
     }
 }
