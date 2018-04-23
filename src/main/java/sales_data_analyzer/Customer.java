@@ -1,7 +1,7 @@
 package sales_data_analyzer;
 
 /**
-* Customer class is responsible to parser and keep the customer data.
+* Customer class is responsible to parser the customer data.
 *
 * @author  Alex S. Garzão
 */
@@ -44,16 +44,25 @@ public class Customer extends Record
         businessArea = tokens[BUSINESS_AREA_INDEX];
     }
 
+    /**
+    * Get CNPJ.
+    */
     public String getCNPJ()
     {
         return CNPJ;
     }
 
+    /**
+    * Get name.
+    */
     public String getName()
     {
         return name;
     }
 
+    /**
+    * Get business area.
+    */
     public String getBusinessArea()
     {
         return businessArea;

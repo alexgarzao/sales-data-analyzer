@@ -35,6 +35,9 @@ public class FileWatcher
         this.inPath = path.toString();
     }
 
+    /**
+    * Sends a new work to the thread pool queue.
+    */
     private void addWork(String inFilename)
     {
         Runnable worker = new WorkerThread(inFilename);
@@ -43,10 +46,6 @@ public class FileWatcher
 
     /**
     * start is responsible to monitore the filesystem for new files.
-    *
-    * @param data contains the data to be parsed.
-    * @return true if the data could be parsed,
-    *         false otherwise.
     */
     public void start()
     {
@@ -56,27 +55,7 @@ public class FileWatcher
             path.register(watchService, StandardWatchEventKinds.ENTRY_MODIFY);
 
             readFilesFromPathOnStartup();
-
-            // Loop forever to watch directory.
-            while (true) {
-                WatchKey watchKey;
-                watchKey = watchService.take();
-
-                // Poll for file system events on the WatchKey.
-                for (final WatchEvent<?> event : watchKey.pollEvents()) {
-                    if (event.context().toString().endsWith(fileSuffixToProcess)) {
-                        addWork(inPath + "/" + event.context());
-                    }
-                }
-
-                // If the watched directed gets deleted, get out of run method.
-                if (!watchKey.reset()) {
-                    LOGGER.severe("WatchKey no longer valid");
-                    watchKey.cancel();
-                    watchService.close();
-                    break;
-                }
-           }
+            watchDirectory(watchService);
        } catch (InterruptedException ex) {
             LOGGER.severe("WatchKey interrupted... bye..." + ex.toString());
             return;
@@ -100,6 +79,34 @@ public class FileWatcher
             }
         } catch (IOException ex) {
             LOGGER.severe("When trying to scan the folder: " + ex.toString());
+        }
+    }
+
+    /**
+    * Watch for files, forever.
+    */
+    private void watchDirectory(WatchService watchService)
+        throws IOException, InterruptedException
+    {
+        // Loop forever to watch directory.
+        while (true) {
+            WatchKey watchKey;
+            watchKey = watchService.take();
+
+            // Poll for file system events on the WatchKey.
+            for (final WatchEvent<?> event : watchKey.pollEvents()) {
+                if (event.context().toString().endsWith(fileSuffixToProcess)) {
+                    addWork(inPath + "/" + event.context());
+                }
+            }
+
+            // If the watched directed gets deleted, get out of run method.
+            if (!watchKey.reset()) {
+                LOGGER.severe("WatchKey no longer valid");
+                watchKey.cancel();
+                watchService.close();
+                break;
+            }
         }
     }
 }

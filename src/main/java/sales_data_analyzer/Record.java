@@ -42,11 +42,17 @@ public class Record
         total++;
     }
 
+    /**
+    * Returns the number of tokens.
+    */
     public int length()
     {
         return tokens.length;
     }
 
+    /**
+    * Returns a specific token index.
+    */
     public String getToken(int index) throws RecordInvalidTokenException
     {
         if (index < 0 || index > length() - 1) {
@@ -56,11 +62,17 @@ public class Record
         return tokens[index];
     }
 
+    /**
+    * Returns the record ID.
+    */
     public String getId()
     {
         return recordId;
     }
 
+    /**
+    * Returns the number of record processed.
+    */
     public int getTotal()
     {
         return total;

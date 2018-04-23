@@ -1,21 +1,13 @@
 package sales_data_analyzer;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.BufferedInputStream;
-import java.io.InputStreamReader;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.nio.charset.StandardCharsets;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 import java.util.logging.Logger;
 
 /**
@@ -58,6 +50,9 @@ public class ProcessSalesFile
         logStats();
     }
 
+    /**
+    * Read the sales file.
+    */
     private void processFile()
         throws FileNotFoundException, IOException, RecordInvalidTokenException
     {
@@ -77,6 +72,9 @@ public class ProcessSalesFile
         salesFileStats.save(outFilename, fieldDelimiter, SalesFile);
     }
 
+    /**
+    * Move the file to backup dir.
+    */
     private void doFileBackup()
     {
         Path source = Paths.get(inFilename);
@@ -91,6 +89,9 @@ public class ProcessSalesFile
         LOGGER.info(String.format("File moved from %s to %s", inFilename, bkpFilename));
     }
 
+    /**
+    * Log some stats about the process.
+    */
     private void logStats()
     {
         LOGGER.info(String.format(

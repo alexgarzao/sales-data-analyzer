@@ -62,6 +62,9 @@ public class Sales extends Record
         salesPerSeller.put(salesman, salesmanTotal);
     }
 
+    /**
+    * Compute the total sale from the items.
+    */
     private double calcTotalSaleFromItems(String items)
         throws RecordInvalidTokenException
     {
@@ -132,6 +135,10 @@ public class Sales extends Record
         salesPerSeller.putIfAbsent(salesmanName, 0d);
     }
 
+    /**
+    * Identify the worst salesman.
+    * To to that, all entries in a totalizer (per salesman) is travelled.
+    */
     public String getWorstSalesman()
     {
         double worstTotal = Double.MAX_VALUE;

@@ -9,15 +9,18 @@ import java.nio.file.Files;
 import java.io.IOException;
 
 /**
-* @author: Alex S. Garzão
-*
 * Main class. The data analyzer start here.
+*
+* @author Alex S. Garzão
 */
 public class App
 {
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-    public static void main( String[] args )
+    /**
+    * main... where the magic start... well, with some bugs too :-)
+    */
+    public static void main(String[] args)
     {
         loggerConfig();
 
@@ -25,21 +28,20 @@ public class App
         LOGGER.info("Current config is " + AppConfig.toLog());
 
         createDefaultDataDirs();
-        startThreadPoolAndFileWatcher();
+        startFileWatcher();
     }
 
+    /**
+    * Config the logger.
+    */
     private static void loggerConfig()
     {
         new LoggerConfig(AppConfig.logPath + AppConfig.logFilename);
     }
 
-    private static void startThreadPoolAndFileWatcher()
-    {
-        ExecutorService executor = Executors.newFixedThreadPool(AppConfig.maxWorkers);
-        FileWatcher fileWatcher = new FileWatcher(Paths.get(AppConfig.inPath), AppConfig.fileSuffixToProcess, executor);
-        fileWatcher.start();
-    }
-
+    /**
+    * If necessary, create the default data dirs.
+    */
     private static void createDefaultDataDirs()
     {
         try {
@@ -50,5 +52,15 @@ public class App
         } catch(IOException ex) {
             LOGGER.severe("When trying to create default paths: " + ex.toString());
         }
+    }
+
+    /**
+    * Start the file watcher.
+    */
+    private static void startFileWatcher()
+    {
+        ExecutorService executor = Executors.newFixedThreadPool(AppConfig.maxWorkers);
+        FileWatcher fileWatcher = new FileWatcher(Paths.get(AppConfig.inPath), AppConfig.fileSuffixToProcess, executor);
+        fileWatcher.start();
     }
 }

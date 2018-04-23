@@ -3,6 +3,11 @@ package sales_data_analyzer;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+* @author: Alex S. Garzão
+*
+* AppConfig class. Just keep the app config.
+*/
 public class AppConfig {
     public static final String inPath = "./data/in/";
     public static final String outPath = "./data/out/";
@@ -15,6 +20,9 @@ public class AppConfig {
     public static final String fileSuffixWhenDone = ".done.dat";
     public static final String fieldDelimiter = "ç";
 
+    /**
+    * Format the config to string.
+    */
     public static String toLog()
     {
         return(String.format(
