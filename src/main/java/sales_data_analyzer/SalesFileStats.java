@@ -33,14 +33,14 @@ public class SalesFileStats
     *
     * Format: 099çTotalSalesMançTotalCustomersçMostExpensiveSaleIdçWorstSalesman
     */
-    public void save(String outFilename, String fieldDelimiter, SalesFileReader salesFileReader)
+    public void save(String outFilename, String fieldDelimiter, SalesFile SalesFile)
         throws IOException
     {
         StringBuilder str = new StringBuilder(RECORD_ID);
-        str.append(fieldDelimiter + salesFileReader.getTotalSalesman());
-        str.append(fieldDelimiter + salesFileReader.getTotalCustomers());
-        str.append(fieldDelimiter + salesFileReader.getMostExpensiveSaleId());
-        str.append(fieldDelimiter + salesFileReader.getWorstSalesman());
+        str.append(fieldDelimiter + SalesFile.getTotalSalesman());
+        str.append(fieldDelimiter + SalesFile.getTotalCustomers());
+        str.append(fieldDelimiter + SalesFile.getMostExpensiveSaleId());
+        str.append(fieldDelimiter + SalesFile.getWorstSalesman());
         str.append('\n');
 
         BufferedWriter writer = new BufferedWriter(new FileWriter(outFilename));

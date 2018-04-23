@@ -7,9 +7,9 @@ import java.io.IOException;
 import java.io.FileNotFoundException;
 
 /**
- * Unit test for SalesFileReader.
+ * Unit test for SalesFile.
  */
-public class SalesFileReaderTest
+public class SalesFileTest
         extends TestCase
 {
     /**
@@ -17,7 +17,7 @@ public class SalesFileReaderTest
      *
      * @param testName name of the test case
      */
-    public SalesFileReaderTest( String testName )
+    public SalesFileTest( String testName )
     {
         super( testName );
     }
@@ -27,7 +27,7 @@ public class SalesFileReaderTest
      */
     public static Test suite()
     {
-        return new TestSuite( SalesFileReaderTest.class );
+        return new TestSuite( SalesFileTest.class );
     }
 
     /**
@@ -36,7 +36,7 @@ public class SalesFileReaderTest
     public void testInterpretingBasicExample1()
     {
         try {
-            SalesFileReader t = new SalesFileReader("samples/data/in/base.dat", AppConfig.fieldDelimiter);
+            SalesFile t = new SalesFile("samples/data/in/base.dat", AppConfig.fieldDelimiter);
             t.read();
             assertEquals(t.getTotalSalesman(), 2);
             assertEquals(t.getTotalCustomers(), 2);
@@ -57,7 +57,7 @@ public class SalesFileReaderTest
     public void testInterpretingBasicExample2()
     {
         try {
-            SalesFileReader t = new SalesFileReader("samples/data/in/base_2.dat", AppConfig.fieldDelimiter);
+            SalesFile t = new SalesFile("samples/data/in/base_2.dat", AppConfig.fieldDelimiter);
             t.read();
             assertEquals(t.getTotalSalesman(), 2);
             assertEquals(t.getTotalCustomers(), 3);
@@ -78,7 +78,7 @@ public class SalesFileReaderTest
     public void testSalesmanWithoutSales()
     {
         try {
-            SalesFileReader t = new SalesFileReader("samples/data/in/base_3.dat", AppConfig.fieldDelimiter);
+            SalesFile t = new SalesFile("samples/data/in/base_3.dat", AppConfig.fieldDelimiter);
             t.read();
             assertEquals(t.getTotalSalesman(), 3);
             assertEquals(t.getTotalCustomers(), 4);
@@ -99,7 +99,7 @@ public class SalesFileReaderTest
     public void testSalesmanWithTwoSales()
     {
         try {
-            SalesFileReader t = new SalesFileReader("samples/data/in/base_4.dat", AppConfig.fieldDelimiter);
+            SalesFile t = new SalesFile("samples/data/in/base_4.dat", AppConfig.fieldDelimiter);
             t.read();
             assertEquals(t.getTotalSalesman(), 2);
             assertEquals(t.getTotalCustomers(), 4);
@@ -120,7 +120,7 @@ public class SalesFileReaderTest
     public void testFileWithEmptyLines()
     {
         try {
-            SalesFileReader t = new SalesFileReader("samples/data/in/base_with_empty_lines.dat", AppConfig.fieldDelimiter);
+            SalesFile t = new SalesFile("samples/data/in/base_with_empty_lines.dat", AppConfig.fieldDelimiter);
             t.read();
             assertEquals(t.getTotalSalesman(), 2);
             assertEquals(t.getTotalCustomers(), 2);
@@ -141,7 +141,7 @@ public class SalesFileReaderTest
     public void testEmptyFile()
     {
         try {
-            SalesFileReader t = new SalesFileReader("samples/data/in/empty_file.dat", AppConfig.fieldDelimiter);
+            SalesFile t = new SalesFile("samples/data/in/empty_file.dat", AppConfig.fieldDelimiter);
             t.read();
             assertEquals(t.getTotalSalesman(), 0);
             assertEquals(t.getTotalCustomers(), 0);
@@ -162,7 +162,7 @@ public class SalesFileReaderTest
     public void testInvalidCustomerRecord()
     {
         try {
-            SalesFileReader t = new SalesFileReader("samples/data/in/invalid_customer_record.dat", AppConfig.fieldDelimiter);
+            SalesFile t = new SalesFile("samples/data/in/invalid_customer_record.dat", AppConfig.fieldDelimiter);
             t.read();
             assertTrue("Invalid file must trigger an exception", false);
         } catch(RecordInvalidTokenException ex) {
@@ -179,7 +179,7 @@ public class SalesFileReaderTest
     public void testFileWithDosEol()
     {
         try {
-            SalesFileReader t = new SalesFileReader("samples/data/in/base_dos_eol.dat", AppConfig.fieldDelimiter);
+            SalesFile t = new SalesFile("samples/data/in/base_dos_eol.dat", AppConfig.fieldDelimiter);
             t.read();
             assertEquals(t.getTotalSalesman(), 2);
             assertEquals(t.getTotalCustomers(), 2);

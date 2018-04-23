@@ -15,11 +15,11 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 /**
-* SalesFileReader is responsible to parser the file.
+* SalesFile is responsible to parser the file.
 *
 * @author  Alex S. Garzão
 */
-public class SalesFileReader
+public class SalesFile
 {
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private static final String RECORD_ID = "001";
@@ -33,9 +33,9 @@ public class SalesFileReader
     private long fileLines;
 
     /**
-    * SalesFileReader is responsible to define the file to be parsed.
+    * SalesFile is responsible to define the file to be parsed.
     */
-    public SalesFileReader(String inFilename, String fieldDelimiter)
+    public SalesFile(String inFilename, String fieldDelimiter)
     {
         this.inFilename = inFilename;
         salesmanData = new Salesman(fieldDelimiter);

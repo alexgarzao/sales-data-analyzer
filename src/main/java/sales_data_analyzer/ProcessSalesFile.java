@@ -33,7 +33,7 @@ public class ProcessSalesFile
     private String bkpFilename;
     private String fieldDelimiter;
 
-    private SalesFileReader salesFileReader;
+    private SalesFile SalesFile;
 
     /**
     * ProcessSalesFile is responsible to define the file to be processed.
@@ -61,8 +61,8 @@ public class ProcessSalesFile
     private void processFile()
         throws FileNotFoundException, IOException, RecordInvalidTokenException
     {
-        salesFileReader = new SalesFileReader(inFilename, fieldDelimiter);
-        salesFileReader.read();
+        SalesFile = new SalesFile(inFilename, fieldDelimiter);
+        SalesFile.read();
     }
 
     /**
@@ -74,7 +74,7 @@ public class ProcessSalesFile
         throws IOException
     {
         SalesFileStats salesFileStats = new SalesFileStats();
-        salesFileStats.save(outFilename, fieldDelimiter, salesFileReader);
+        salesFileStats.save(outFilename, fieldDelimiter, SalesFile);
     }
 
     private void doFileBackup()
@@ -95,6 +95,6 @@ public class ProcessSalesFile
     {
         LOGGER.info(String.format(
             "File: %s TimeToProcess: %d Lines: %d TotalSalesman: %d TotalCustomers: %d TotalSales: %d",
-            inFilename, salesFileReader.getSpentTimeToProcess(), salesFileReader.getFileLines(), salesFileReader.getTotalSalesman(), salesFileReader.getTotalCustomers(), salesFileReader.getTotalSales()));
+            inFilename, SalesFile.getSpentTimeToProcess(), SalesFile.getFileLines(), SalesFile.getTotalSalesman(), SalesFile.getTotalCustomers(), SalesFile.getTotalSales()));
     }
 }
