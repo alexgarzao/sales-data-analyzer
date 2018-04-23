@@ -62,7 +62,7 @@ public class SalesFile
     /**
     * process is responsible to extract all the data from a file.
     */
-    public void process() throws FileNotFoundException, IOException
+    public void process() throws FileNotFoundException, IOException, RecordInvalidTokenException
     {
         BufferedInputStream bf = new BufferedInputStream(new FileInputStream(inFilename));
         BufferedReader in = new BufferedReader(new InputStreamReader(bf, StandardCharsets.UTF_8));
@@ -77,14 +77,18 @@ public class SalesFile
                 recordLine = in.readLine();
                 continue;
             }
-            String formatId = recordLine.substring(0, 3);
-            Record record = recordTypes.get(formatId);
-            // TODO: and if the formatId doesn't exist?
-            record.parser(recordLine);
-            if (formatId.equals("001")) {
-                salesData.addNewSalesman(salesmanData.getName());
+            try {
+                String formatId = recordLine.substring(0, 3);
+                Record record = recordTypes.get(formatId);
+                // TODO: and if the formatId doesn't exist?
+                record.parser(recordLine);
+                if (formatId.equals("001")) {
+                    salesData.addNewSalesman(salesmanData.getName());
+                }
+            } catch(Exception ex) {
+                throw new RecordInvalidTokenException();
             }
-            
+
             recordLine = in.readLine();
         }
 
