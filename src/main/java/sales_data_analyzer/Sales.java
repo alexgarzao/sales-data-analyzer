@@ -16,8 +16,8 @@ public class Sales extends Record
     private String salesman;
     private float totalSale;
 
-    private float mostExpensiveSaleTotal;
-    private String mostExpensiveSaleId;
+    private float mostExpensiveSaleTotal = 0f;
+    private String mostExpensiveSaleId = "";
 
     private Map<String, Float> salesPerSeller = new HashMap<String, Float>();
 
@@ -33,15 +33,13 @@ public class Sales extends Record
     * @return true if the data could be parsed,
     *         false otherwise.
     */
-    public boolean parser(String data)
+    public void parser(String data) throws RecordInvalidTokenException
     {
         saleId = "";
         salesman = "";
         totalSale = 0;
 
-        if (super.parser(data) == false) {
-            return false;
-        }
+        super.parser(data);
 
         saleId = tokens[1];
         String items = tokens[2];
@@ -57,8 +55,6 @@ public class Sales extends Record
         float salesmanTotal = salesPerSeller.getOrDefault(salesman, 0f);
         salesmanTotal += totalSale;
         salesPerSeller.put(salesman, salesmanTotal);
-
-        return true;
     }
 
     // [ItemID-ItemQuantity-ItemPrice]
@@ -89,7 +85,6 @@ public class Sales extends Record
         }
 
         return totalSale;
-
     }
 
     public String getSaleId()

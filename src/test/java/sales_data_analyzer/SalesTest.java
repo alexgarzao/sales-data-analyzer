@@ -10,6 +10,13 @@ import junit.framework.TestSuite;
 public class SalesTest
         extends TestCase
 {
+    private Sales t;
+
+    protected void setUp()
+    {
+        t = new Sales();
+    }
+
     /**
      * Create the test case
      *
@@ -28,14 +35,21 @@ public class SalesTest
         return new TestSuite( SalesTest.class );
     }
 
+    private void parserWithExceptionExpected(String recordLine) {
+        try {
+            t.parser(recordLine);
+            assertTrue("Must be an invalid record!", false);
+        } catch(RecordInvalidTokenException ex) {
+        }
+    }
+
     /**
      * Basic test with valid data.
      */
-    public void testWithValidData()
+    public void testWithValidData() throws RecordInvalidTokenException
     {
-        Sales t = new Sales();
-        assertTrue(t.parser("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiego"));
-        assertTrue(t.parser("003ç08ç[1-34-10,2-33-1.50,3-40-0.10]çRenato"));
+        t.parser("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiego");
+        t.parser("003ç08ç[1-34-10,2-33-1.50,3-40-0.10]çRenato");
     }
 
     /**
@@ -43,9 +57,8 @@ public class SalesTest
      */
     public void testWithInvalidFormatId()
     {
-        Sales t = new Sales();
-        assertFalse(t.parser("001ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiego"));
-        assertFalse(t.parser("002ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiego"));
+        parserWithExceptionExpected("001ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiego");
+        parserWithExceptionExpected("002ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiego");
     }
 
     /**
@@ -53,13 +66,12 @@ public class SalesTest
      */
     public void testWithLessDataThanNecessary()
     {
-        Sales t = new Sales();
-        assertFalse(t.parser("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]ç"));
-        assertFalse(t.parser("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]"));
-        assertFalse(t.parser("003ç10ç"));
-        assertFalse(t.parser("003ç10"));
-        assertFalse(t.parser("003ç"));
-        assertFalse(t.parser("003"));
+        parserWithExceptionExpected("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]ç");
+        parserWithExceptionExpected("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]");
+        parserWithExceptionExpected("003ç10ç");
+        parserWithExceptionExpected("003ç10");
+        parserWithExceptionExpected("003ç");
+        parserWithExceptionExpected("003");
     }
 
     /**
@@ -67,54 +79,49 @@ public class SalesTest
      */
     public void testWithMoreDataThanNecessary()
     {
-        Sales t = new Sales();
-        assertFalse(t.parser("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiegoçA"));
-        assertFalse(t.parser("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiegoçAç"));
-        assertFalse(t.parser("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiegoçAç12"));
+        parserWithExceptionExpected("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiegoçA");
+        parserWithExceptionExpected("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiegoçAç");
+        parserWithExceptionExpected("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiegoçAç12");
     }
 
     /**
      * Test validating expected sale ID.
      */
-    public void testValidatingSaleId()
+    public void testValidatingSaleId() throws RecordInvalidTokenException
     {
-        Sales t = new Sales();
-        assertTrue(t.parser("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiego"));
-        assertTrue(t.getSaleId().equals("10"));
+        t.parser("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiego");
+        assertEquals(t.getSaleId(), "10");
     }
 
     /**
      * Test validating total sale.
      */
-    public void testValidatingTotalSale()
+    public void testValidatingTotalSale() throws RecordInvalidTokenException
     {
-        Sales t = new Sales();
-        assertTrue(t.parser("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiego"));
+        t.parser("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiego");
         assertEquals(t.getTotalSale(), 10*100.0f + 30*2.50f + 40*3.10f);
     }
 
     /**
      * Test validating expected salesman.
      */
-    public void testValidatingSalesman()
+    public void testValidatingSalesman() throws RecordInvalidTokenException
     {
-        Sales t = new Sales();
-        assertTrue(t.parser("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiego"));
+        t.parser("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiego");
         assertTrue(t.getSalesman().equals("Diego"));
     }
 
     /**
      * Test validating the input example.
      */
-    public void testValidatingInputExample()
+    public void testValidatingInputExample() throws RecordInvalidTokenException
     {
-        Sales t = new Sales();
-        assertTrue(t.parser("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiego"));
+        t.parser("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiego");
         assertTrue(t.getSaleId().equals("10"));
         assertEquals(t.getTotalSale(), 10*100.0f + 30*2.50f + 40*3.10f);
         assertTrue(t.getSalesman().equals("Diego"));
 
-        assertTrue(t.parser("003ç08ç[1-34-10,2-33-1.50,3-40-0.10]çRenato"));
+        t.parser("003ç08ç[1-34-10,2-33-1.50,3-40-0.10]çRenato");
         assertTrue(t.getSaleId().equals("08"));
         assertEquals(t.getTotalSale(), 34*10.0f + 33*1.50f + 40*0.10f);
         assertTrue(t.getSalesman().equals("Renato"));

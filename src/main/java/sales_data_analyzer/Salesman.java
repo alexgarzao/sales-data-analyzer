@@ -24,15 +24,13 @@ public class Salesman extends Record
     * @return true if the data could be parsed,
     *         false otherwise.
     */
-    public boolean parser(String data)
+    public void parser(String data) throws RecordInvalidTokenException
     {
         CPF = "";
         name = "";
         salary = 0;
 
-        if (super.parser(data) == false) {
-            return false;
-        }
+        super.parser(data);
 
         CPF = tokens[1];
         name = tokens[2];
@@ -40,10 +38,8 @@ public class Salesman extends Record
         try {
             salary = Float.parseFloat(tokens[3]);
         } catch (NumberFormatException e) {
-            return false;
+            throw new RecordInvalidTokenException();
         }
-
-        return true;
     }
 
     public String getCPF()

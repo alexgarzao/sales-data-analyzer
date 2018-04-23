@@ -24,21 +24,17 @@ public class Customer extends Record
     * @return true if the data could be parsed,
     *         false otherwise.
     */
-    public boolean parser(String data)
+    public void parser(String data) throws RecordInvalidTokenException
     {
         CNPJ = "";
         name = "";
         businessArea = "";
 
-        if (super.parser(data) == false) {
-            return false;
-        }
+        super.parser(data);
 
         CNPJ = tokens[1];
         name = tokens[2];
         businessArea = tokens[3];
-
-        return true;
     }
 
     public String getCNPJ()

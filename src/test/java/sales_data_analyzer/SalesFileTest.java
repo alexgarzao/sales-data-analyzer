@@ -42,6 +42,8 @@ public class SalesFileTest
             assertEquals(t.getTotalClients(), 2);
             assertEquals(t.getMostExpensiveSaleId(), "10");
             assertEquals(t.getWorstSalesman(), "Renato");
+        } catch(RecordInvalidTokenException ex) {
+            assertTrue("This file is well formed, but something is wrong!", false);
         } catch(FileNotFoundException e) {
             assertTrue("File must exist to complete the test!", false);
         } catch(IOException e) {
@@ -61,6 +63,8 @@ public class SalesFileTest
             assertEquals(t.getTotalClients(), 3);
             assertEquals(t.getMostExpensiveSaleId(), "08");
             assertEquals(t.getWorstSalesman(), "Diego");
+        } catch(RecordInvalidTokenException ex) {
+            assertTrue("This file is well formed, but something is wrong!", false);
         } catch(FileNotFoundException e) {
             assertTrue("File must exist to complete the test!", false);
         } catch(IOException e) {
@@ -80,6 +84,8 @@ public class SalesFileTest
             assertEquals(t.getTotalClients(), 4);
             assertEquals(t.getMostExpensiveSaleId(), "08");
             assertEquals(t.getWorstSalesman(), "Alex");
+        } catch(RecordInvalidTokenException ex) {
+            assertTrue("This file is well formed, but something is wrong!", false);
         } catch(FileNotFoundException e) {
             assertTrue("File must exist to complete the test!", false);
         } catch(IOException e) {
@@ -99,6 +105,8 @@ public class SalesFileTest
             assertEquals(t.getTotalClients(), 4);
             assertEquals(t.getMostExpensiveSaleId(), "10");
             assertEquals(t.getWorstSalesman(), "Renato");
+        } catch(RecordInvalidTokenException ex) {
+            assertTrue("This file is well formed, but something is wrong!", false);
         } catch(FileNotFoundException e) {
             assertTrue("File must exist to complete the test!", false);
         } catch(IOException e) {
@@ -118,6 +126,8 @@ public class SalesFileTest
             assertEquals(t.getTotalClients(), 2);
             assertEquals(t.getMostExpensiveSaleId(), "10");
             assertEquals(t.getWorstSalesman(), "Renato");
+        } catch(RecordInvalidTokenException ex) {
+            assertTrue("This file is well formed, but something is wrong!", false);
         } catch(FileNotFoundException e) {
             assertTrue("File must exist to complete the test!", false);
         } catch(IOException e) {
@@ -125,5 +135,41 @@ public class SalesFileTest
         }
     }
 
-    // TODO: example with a lot of data.
+    /**
+     * Empty file.
+     */
+    public void testEmptyFile()
+    {
+        try {
+            SalesFile t = new SalesFile("samples/data/in/empty_file.dat", "samples/data/out/empty_file.done.dat", "samples/data/proc/empty_file.dat");
+            t.process();
+            assertEquals(t.getTotalSalesman(), 0);
+            assertEquals(t.getTotalClients(), 0);
+            assertEquals(t.getMostExpensiveSaleId(), "");
+            assertEquals(t.getWorstSalesman(), "");
+        } catch(RecordInvalidTokenException ex) {
+            assertTrue("This file is well formed, but something is wrong!", false);
+        } catch(FileNotFoundException e) {
+            assertTrue("File must exist to complete the test!", false);
+        } catch(IOException e) {
+            assertTrue("IO exception!", false);
+        }
+    }
+
+    /**
+     * Invalid customer record.
+     */
+    public void testInvalidCustomerRecord()
+    {
+        try {
+            SalesFile t = new SalesFile("samples/data/in/invalid_customer_record.dat", "samples/data/out/invalid_customer_record.done.dat", "samples/data/proc/invalid_customer_record.dat");
+            t.process();
+            assertTrue("Invalid file must trigger an exception", false);
+        } catch(RecordInvalidTokenException ex) {
+        } catch(FileNotFoundException e) {
+            assertTrue("File must exist to complete the test!", false);
+        } catch(IOException e) {
+            assertTrue("IO exception!", false);
+        }
+    }
 }

@@ -35,12 +35,20 @@ public class SalesmanTest
         return new TestSuite( SalesmanTest.class );
     }
 
+    private void parserWithExceptionExpected(String recordLine) {
+        try {
+            t.parser(recordLine);
+            assertTrue("Must be an invalid record!", false);
+        } catch(RecordInvalidTokenException ex) {
+        }
+    }
+
     /**
      * Basic test with valid data.
      */
-    public void testWithValidData()
+    public void testWithValidData() throws RecordInvalidTokenException
     {
-        assertTrue(t.parser("001ç12345678901çName 1ç123456.78"));
+        t.parser("001ç12345678901çName 1ç123456.78");
     }
 
     /**
@@ -48,8 +56,8 @@ public class SalesmanTest
      */
     public void testWithInvalidFormatId()
     {
-        assertFalse(t.parser("002ç12345678901çName 1ç123456.78"));
-        assertFalse(t.parser("003ç12345678901çName 1ç123456.78"));
+        parserWithExceptionExpected("002ç12345678901çName 1ç123456.78");
+        parserWithExceptionExpected("003ç12345678901çName 1ç123456.78");
     }
 
     /**
@@ -57,12 +65,12 @@ public class SalesmanTest
      */
     public void testWithLessDataThanNecessary()
     {
-        assertFalse(t.parser("001ç12345678901çName 1ç"));
-        assertFalse(t.parser("001ç12345678901çName 1"));
-        assertFalse(t.parser("001ç12345678901ç"));
-        assertFalse(t.parser("001ç12345678901"));
-        assertFalse(t.parser("001ç"));
-        assertFalse(t.parser("001"));
+        parserWithExceptionExpected("001ç12345678901çName 1ç");
+        parserWithExceptionExpected("001ç12345678901çName 1");
+        parserWithExceptionExpected("001ç12345678901ç");
+        parserWithExceptionExpected("001ç12345678901");
+        parserWithExceptionExpected("001ç");
+        parserWithExceptionExpected("001");
     }
 
     /**
@@ -70,41 +78,41 @@ public class SalesmanTest
      */
     public void testWithMoreDataThanNecessary()
     {
-        assertFalse(t.parser("001ç12345678901çName 1ç123456.78ç12"));
-        assertFalse(t.parser("001ç12345678901çName 1ç123456.78çAç"));
-        assertFalse(t.parser("001ç12345678901çName 1ç123456.78çAç12"));
+        parserWithExceptionExpected("001ç12345678901çName 1ç123456.78ç12");
+        parserWithExceptionExpected("001ç12345678901çName 1ç123456.78çAç");
+        parserWithExceptionExpected("001ç12345678901çName 1ç123456.78çAç12");
     }
 
     /**
      * Test validating expected CPF.
      */
-    public void testValidatingCPF()
+    public void testValidatingCPF() throws RecordInvalidTokenException
     {
-        assertTrue(t.parser("001ç12345678901çName 1ç123456.78"));
-        assertTrue(t.getCPF().equals("12345678901"));
+        t.parser("001ç12345678901çName 1ç123456.78");
+        assertEquals(t.getCPF(), "12345678901");
     }
 
     /**
      * Test validating expected name.
      */
-    public void testValidatingName()
+    public void testValidatingName() throws RecordInvalidTokenException
     {
-        assertTrue(t.parser("001ç12345678901çName 1ç123456.78"));
-        assertTrue(t.getName().equals("Name 1"));
+        t.parser("001ç12345678901çName 1ç123456.78");
+        assertEquals(t.getName(), "Name 1");
     }
 
     /**
      * Test validating expected salary.
      */
-    public void testValidatingSalary()
+    public void testValidatingSalary() throws RecordInvalidTokenException
     {
-        assertTrue(t.parser("001ç12345678901çName 1ç123456.78"));
+        t.parser("001ç12345678901çName 1ç123456.78");
         assertTrue(t.getSalary() == 123456.78f);
 
-        assertTrue(t.parser("001ç12345678901çName 1ç12345"));
+        t.parser("001ç12345678901çName 1ç12345");
         assertTrue(t.getSalary() == 12345f);
 
-        assertTrue(t.parser("001ç12345678901çName 1ç12345"));
+        t.parser("001ç12345678901çName 1ç12345");
         assertTrue(t.getSalary() == 12345);
     }
 
@@ -113,23 +121,23 @@ public class SalesmanTest
      */
     public void testWithInvalidSalary()
     {
-        assertFalse(t.parser("001ç12345678901çName 1ç123A45"));
-        assertFalse(t.parser("001ç12345678901çName 1ç123,45"));
+        parserWithExceptionExpected("001ç12345678901çName 1ç123A45");
+        parserWithExceptionExpected("001ç12345678901çName 1ç123,45");
     }
 
     /**
      * Test validating the input example.
      */
-    public void testValidatingInputExample()
+    public void testValidatingInputExample() throws RecordInvalidTokenException
     {
-        assertTrue(t.parser("001ç1234567891234çDiegoç50000"));
-        assertTrue(t.getCPF().equals("1234567891234"));
-        assertTrue(t.getName().equals("Diego"));
-        assertTrue(t.getSalary() == 50000);
+        t.parser("001ç1234567891234çDiegoç50000");
+        assertEquals(t.getCPF(), "1234567891234");
+        assertEquals(t.getName(), "Diego");
+        assertEquals(t.getSalary(), 50000f);
 
-        assertTrue(t.parser("001ç3245678865434çRenatoç40000.99"));
-        assertTrue(t.getCPF().equals("3245678865434"));
-        assertTrue(t.getName().equals("Renato"));
-        assertTrue(t.getSalary() == 40000.99f);
+        t.parser("001ç3245678865434çRenatoç40000.99");
+        assertEquals(t.getCPF(), "3245678865434");
+        assertEquals(t.getName(), "Renato");
+        assertEquals(t.getSalary(), 40000.99f);
     }
 }

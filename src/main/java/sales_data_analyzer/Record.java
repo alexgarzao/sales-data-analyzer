@@ -26,21 +26,19 @@ public class Record
     * @return true if the data could be parsed,
     *         false otherwise.
     */
-    public boolean parser(String data)
+    public void parser(String data) throws RecordInvalidTokenException
     {
         tokens = data.split("ç");
 
         if (tokens.length != dataNumber) {
-            return false;
+            throw new RecordInvalidTokenException();
         }
 
         if (tokens[0].equals(recordId) == false) {
-            return false;
+            throw new RecordInvalidTokenException();
         }
 
         total += 1;
-
-        return true;
     }
 
     public int length()
