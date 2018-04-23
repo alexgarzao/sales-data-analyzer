@@ -17,23 +17,28 @@ public class WorkerThread implements Runnable {
     @Override
     public void run() {
         try {
-            LOGGER.info("Start file " + config.inFilename);
             processCommand();
-            LOGGER.info("End file " + config.inFilename);
-            LOGGER.info("Stats file created in " + config.bkpFilename);
         } catch(Exception ex) {
             LOGGER.severe(ex.toString());
         }
     }
 
     private void processCommand() throws FileNotFoundException, IOException {
+
         try {
+            LOGGER.info("Start file " + config.inFilename);
+
             SalesFile t = new SalesFile(config.inFilename, config.outFilename, config.bkpFilename);
             t.process();
-        } catch(FileNotFoundException e) {
-            throw e;
-        } catch(IOException e) {
-            throw e;
+
+            LOGGER.info("End file " + config.inFilename);
+            LOGGER.info("Stats file created in " + config.bkpFilename);
+        } catch(RecordInvalidTokenException ex) {
+            LOGGER.severe(String.format("Invalid record processing file %s: %s", config.inFilename, ex));
+        } catch(FileNotFoundException ex) {
+            LOGGER.severe(String.format("File not found: %s", config.inFilename));
+        } catch(IOException ex) {
+            LOGGER.severe(String.format("I/O exception when processing file %s: %s", config.inFilename, ex));
         }
     }
 
