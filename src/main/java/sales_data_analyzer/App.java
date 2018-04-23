@@ -17,14 +17,25 @@ public class App
 
     public static void main( String[] args )
     {
-        new LoggerConfig(AppConfig.logFilename);
+        loggerConfig();
 
         LOGGER.info("Starting Sales Data Analyzer 0.1");
+        LOGGER.info("Current config is " + AppConfig.toLog());
 
+        startThreadPoolAndFileWatcher();
+
+        LOGGER.info("Ending Sales Data Analyzer 0.1");
+    }
+
+    private static void loggerConfig()
+    {
+        new LoggerConfig(AppConfig.logPath + "/" + AppConfig.logFilename);
+    }
+
+    private static void startThreadPoolAndFileWatcher()
+    {
         ExecutorService executor = Executors.newFixedThreadPool(AppConfig.maxWorkers);
         FileWatcher fileWatcher = new FileWatcher(Paths.get(AppConfig.inPath), executor);
         fileWatcher.start();
-
-        LOGGER.info("Ending Sales Data Analyzer 0.1");
     }
 }

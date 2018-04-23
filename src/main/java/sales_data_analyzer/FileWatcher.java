@@ -13,7 +13,8 @@ import java.nio.file.Paths;
 import java.util.logging.Logger;
 
 /**
-* FileWatcher class is responsible to find new files to be processed.
+* FileWatcher class is responsible to find new files to be processed and
+*             send that work to the thread pool.
 *
 * @author  Alex S. Garzão
 */
@@ -32,11 +33,13 @@ public class FileWatcher
 
     private void addWork(String inFilename)
     {
+        // TODO: nao faz sentido resolver os 3 nomes aqui... deveria ser na WorkerThread???
         Path p = Paths.get(inFilename);
         String file = p.getFileName().toString();
 
-        String outFilename = "./data/out/" + file.replace(".dat", ".done.dat");
-        String bkpFilename = "./data/proc/" + file;
+        String outFilename = AppConfig.outPath + "/" + file.replace(AppConfig.fileSuffixToProcess, AppConfig.fileSuffixWhenDone);
+        // TODO: se der para padronizar todos os paths com / no final na config, essa barra abaixo eh inutil
+        String bkpFilename = AppConfig.procPath + "/" + file;
         WorkerConfig config = new WorkerConfig(inFilename, outFilename, bkpFilename);
         Runnable worker = new WorkerThread(config);
         executor.execute(worker);
@@ -58,15 +61,7 @@ public class FileWatcher
             WatchService watchService = path.getFileSystem().newWatchService();
             path.register(watchService, StandardWatchEventKinds.ENTRY_MODIFY);
 
-            // Read files from path (only once, on the startup).
-            try {
-                DirectoryStream<Path> directoryStream = Files.newDirectoryStream(Paths.get("./data/in"), "*.dat");
-                for (Path path : directoryStream) {
-                    addWork(path.toString());
-                }
-            } catch (IOException ex) {
-                LOGGER.severe("When trying to scan the folder: " + ex.toString());
-            }
+            readFilesFromPathOnStartup();
 
             // Loop forever to watch directory.
             while (true) {
@@ -75,8 +70,8 @@ public class FileWatcher
 
                 // Poll for file system events on the WatchKey.
                 for (final WatchEvent<?> event : watchKey.pollEvents()) {
-                    if (event.context().toString().endsWith(".dat")) {
-                        addWork("./data/in/" + event.context());
+                    if (event.context().toString().endsWith(AppConfig.fileSuffixToProcess)) {
+                        addWork(AppConfig.inPath + "/" + event.context());
                     }
                 }
 
@@ -100,13 +95,29 @@ public class FileWatcher
     private void createDefaultDataDirs()
     {
         try {
-            Files.createDirectories(Paths.get("data/in"));
-            Files.createDirectories(Paths.get("data/out"));
-            Files.createDirectories(Paths.get("data/proc"));
-            Files.createDirectories(Paths.get("data/log"));
-        } catch(IOException ex)
-        {
+            Files.createDirectories(Paths.get(AppConfig.inPath));
+            Files.createDirectories(Paths.get(AppConfig.outPath));
+            Files.createDirectories(Paths.get(AppConfig.procPath));
+            Files.createDirectories(Paths.get(AppConfig.logPath));
+        } catch(IOException ex) {
             LOGGER.severe("When trying to create default paths: " + ex.toString());
+        }
+    }
+
+    /**
+    * readFilesFromPath is responsible to read all the files from path, once
+    *                   on the startup.
+    */
+    private void readFilesFromPathOnStartup()
+    {
+        try {
+            DirectoryStream<Path> directoryStream = Files.newDirectoryStream(
+                Paths.get(AppConfig.inPath), "*" + AppConfig.fileSuffixToProcess);
+            for (Path path : directoryStream) {
+                addWork(path.toString());
+            }
+        } catch (IOException ex) {
+            LOGGER.severe("When trying to scan the folder: " + ex.toString());
         }
     }
 }
