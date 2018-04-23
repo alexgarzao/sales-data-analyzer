@@ -1,3 +1,6 @@
+rebuild: clean prepdata
+	mvn clean
+
 test: clean prepdata
 	mvn test
 
