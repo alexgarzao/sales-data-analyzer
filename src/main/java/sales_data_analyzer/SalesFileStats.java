@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 public class SalesFileStats
 {
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-    private static final String RECORD_ID = "003";
+    private static final String RECORD_ID = "099";
 
     /**
     * save is responsible to save the stats on the out filename.
