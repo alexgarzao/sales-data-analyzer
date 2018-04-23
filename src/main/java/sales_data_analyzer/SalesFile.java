@@ -26,6 +26,8 @@ import java.util.logging.Logger;
 public class SalesFile
 {
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private static final String RECORD_ID = "001";
+    private static final int RECORD_SIZE = RECORD_ID.length();
 
     private String inFilename;
     private String outFilename;
@@ -47,7 +49,53 @@ public class SalesFile
     }
 
     /**
+    * process is responsible to extract all the data from a file.
+    */
+    public void process()
+        throws FileNotFoundException, IOException, RecordInvalidTokenException
+    {
+        LOGGER.info("Start process file " + inFilename);
+
+        processFile();
+        saveFileStats();
+        doFileBackup();
+        logStats();
+    }
+
+    private void processFile()
+        throws FileNotFoundException, IOException, RecordInvalidTokenException
+    {
+        long startTime = System.currentTimeMillis();
+
+        BufferedInputStream bf = new BufferedInputStream(new FileInputStream(inFilename));
+        BufferedReader in = new BufferedReader(new InputStreamReader(bf, StandardCharsets.UTF_8));
+        Map<String, Record> recordTypes = mapAllRecordTypes();
+        String recordLine;
+
+        recordLine = in.readLine();
+
+        while(recordLine != null) {
+            fileLines += 1;
+
+            if (recordLine.isEmpty()) {
+                recordLine = in.readLine();
+                continue;
+            }
+
+            recordParser(recordLine, recordTypes);
+
+            recordLine = in.readLine();
+        }
+
+        bf.close();
+        in.close();
+
+        spentTimeToProcess = System.currentTimeMillis() - startTime;
+    }
+
+    /**
     * mapAllRecordTypes is responsible to map all record types.
+    *     The main purpouse is to speed up the discovery of record type.
     *
     * @return all record types mapped.
     */
@@ -62,52 +110,19 @@ public class SalesFile
         return recordTypes;
     }
 
-    /**
-    * process is responsible to extract all the data from a file.
-    */
-    public void process() throws FileNotFoundException, IOException, RecordInvalidTokenException
+    private void recordParser(String recordLine, Map<String, Record> recordTypes)
+        throws RecordInvalidTokenException
     {
-        long startTime = System.currentTimeMillis();
-
-        BufferedInputStream bf = new BufferedInputStream(new FileInputStream(inFilename));
-        BufferedReader in = new BufferedReader(new InputStreamReader(bf, StandardCharsets.UTF_8));
-
-        Map<String, Record> recordTypes = mapAllRecordTypes();
-
-        String recordLine;
-        recordLine = in.readLine();
-
-        while(recordLine != null) {
-            fileLines += 1;
-
-            if (recordLine.isEmpty()) {
-                recordLine = in.readLine();
-                continue;
+        try {
+            String formatId = recordLine.substring(0, RECORD_SIZE);
+            Record record = recordTypes.get(formatId);
+            record.parser(recordLine);
+            if (formatId.equals(RECORD_ID)) {
+                salesData.addNewSalesman(salesmanData.getName());
             }
-            try {
-                String formatId = recordLine.substring(0, 3);
-                Record record = recordTypes.get(formatId);
-                record.parser(recordLine);
-                if (formatId.equals("001")) {
-                    salesData.addNewSalesman(salesmanData.getName());
-                }
-            } catch(Exception ex) {
-                throw new RecordInvalidTokenException();
-            }
-
-            recordLine = in.readLine();
+        } catch(Exception ex) {
+            throw new RecordInvalidTokenException();
         }
-
-        bf.close();
-        in.close();
-
-        spentTimeToProcess = System.currentTimeMillis() - startTime;
-
-        saveFileStats();
-
-        doFileBackup();
-
-        logStats();
     }
 
     /**
@@ -161,23 +176,26 @@ public class SalesFile
     }
 
     /**
-    * TODO is responsible to return the worst salesman.
+    * saveFileStats responsible to save the stats on the out filename.
     *
     * Format: 099çTotalSalesMançTotalCustomersçMostExpensiveSaleIdçWorstSalesman
-    * @return the worst salesman.
     */
-    public void saveFileStats() throws IOException {
+    public void saveFileStats()
+        throws IOException
+    {
         StringBuilder str = new StringBuilder("099");
-        str.append("ç" + getTotalSalesman());
-        str.append("ç" + getTotalCustomers());
-        str.append("ç" + getMostExpensiveSaleId());
-        str.append("ç" + getWorstSalesman());
+        str.append(AppConfig.recordDelimiter + getTotalSalesman());
+        str.append(AppConfig.recordDelimiter + getTotalCustomers());
+        str.append(AppConfig.recordDelimiter + getMostExpensiveSaleId());
+        str.append(AppConfig.recordDelimiter + getWorstSalesman());
         str.append('\n');
 
         BufferedWriter writer = new BufferedWriter(new FileWriter(outFilename));
         writer.write(str.toString());
 
         writer.close();
+
+        LOGGER.info("Stats file created in " + outFilename);
     }
 
     private void doFileBackup()
@@ -190,6 +208,8 @@ public class SalesFile
         } catch (Exception ex) {
             LOGGER.severe("When trying to move the file: " + ex.toString());
         }
+
+        LOGGER.info(String.format("File moved from %s to %s", inFilename, bkpFilename));
     }
 
     private void logStats()

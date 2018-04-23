@@ -33,15 +33,7 @@ public class FileWatcher
 
     private void addWork(String inFilename)
     {
-        // TODO: nao faz sentido resolver os 3 nomes aqui... deveria ser na WorkerThread???
-        Path p = Paths.get(inFilename);
-        String file = p.getFileName().toString();
-
-        String outFilename = AppConfig.outPath + "/" + file.replace(AppConfig.fileSuffixToProcess, AppConfig.fileSuffixWhenDone);
-        // TODO: se der para padronizar todos os paths com / no final na config, essa barra abaixo eh inutil
-        String bkpFilename = AppConfig.procPath + "/" + file;
-        WorkerConfig config = new WorkerConfig(inFilename, outFilename, bkpFilename);
-        Runnable worker = new WorkerThread(config);
+        Runnable worker = new WorkerThread(inFilename);
         executor.execute(worker);
     }
 
@@ -77,17 +69,17 @@ public class FileWatcher
 
                 // If the watched directed gets deleted, get out of run method.
                 if (!watchKey.reset()) {
-                    LOGGER.warning("WatchKey no longer valid");
+                    LOGGER.severe("WatchKey no longer valid");
                     watchKey.cancel();
                     watchService.close();
                     break;
                 }
            }
        } catch (InterruptedException ex) {
-            LOGGER.warning("WatchKey interrupted... bye...");
+            LOGGER.severe("WatchKey interrupted... bye..." + ex.toString());
             return;
         } catch (IOException ex) {
-            LOGGER.severe(ex.getStackTrace().toString());
+            LOGGER.severe("When WhatchKey..." + ex.getStackTrace().toString());
             return;
         }
     }
@@ -112,7 +104,7 @@ public class FileWatcher
     {
         try {
             DirectoryStream<Path> directoryStream = Files.newDirectoryStream(
-                Paths.get(AppConfig.inPath), "*" + AppConfig.fileSuffixToProcess);
+                Paths.get(AppConfig.inPath), AppConfig.getMaskToWatch());
             for (Path path : directoryStream) {
                 addWork(path.toString());
             }

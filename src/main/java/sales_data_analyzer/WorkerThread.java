@@ -9,14 +9,15 @@ import java.util.logging.Logger;
 *
 * WorkerThread class. A worker thread.
 */
-public class WorkerThread implements Runnable {
+public class WorkerThread implements Runnable
+{
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-    private WorkerConfig config;
+    private String inFilename;
 
-    public WorkerThread(WorkerConfig config)
+    public WorkerThread(String inFilename)
     {
-        this.config = config;
+        this.inFilename = inFilename;
     }
 
     @Override
@@ -28,27 +29,26 @@ public class WorkerThread implements Runnable {
         }
     }
 
-    private void processCommand() throws FileNotFoundException, IOException {
+    private void processCommand()
+        throws FileNotFoundException, IOException
+    {
+        String outFilename = AppConfig.getOutFilename(inFilename);
+        String bkpFilename = AppConfig.getBkpFilename(inFilename);
 
         try {
-            LOGGER.info("Start file " + config.inFilename);
-
-            SalesFile t = new SalesFile(config.inFilename, config.outFilename, config.bkpFilename);
+            SalesFile t = new SalesFile(inFilename, outFilename, bkpFilename);
             t.process();
-
-            LOGGER.info(String.format("Moving file %s to %s", config.inFilename, config.bkpFilename));
-            LOGGER.info("Stats file created in " + config.outFilename);
         } catch(RecordInvalidTokenException ex) {
-            LOGGER.severe(String.format("Invalid record processing file %s: %s", config.inFilename, ex));
+            LOGGER.severe(String.format("Invalid record processing file %s: %s", inFilename, ex));
         } catch(FileNotFoundException ex) {
-            LOGGER.severe(String.format("File not found: %s", config.inFilename));
+            LOGGER.severe(String.format("File not found: %s", inFilename));
         } catch(IOException ex) {
-            LOGGER.severe(String.format("I/O exception when processing file %s: %s", config.inFilename, ex));
+            LOGGER.severe(String.format("I/O exception when processing file %s: %s", inFilename, ex));
         }
     }
 
     @Override
     public String toString(){
-        return config.inFilename;
+        return inFilename;
     }
 }
