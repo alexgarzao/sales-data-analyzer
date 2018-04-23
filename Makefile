@@ -1,10 +1,10 @@
-rebuild: clean prepdata
+rebuild: clean
 	mvn clean
 
 test: clean prepdata
 	mvn test
 
-run: clean prepdata
+run: clean
 	mvn package
 	java -cp target/sales-data-analyzer-1.0-SNAPSHOT.jar sales_data_analyzer.App
 
