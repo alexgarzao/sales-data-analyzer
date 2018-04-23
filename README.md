@@ -1,16 +1,20 @@
 # sales-data-analyzer
+
 Simple sales data analyzer, 100% coded in Java.
 
 ## Requirements
-maven
-java versao 1.8 or greather
+
+* maven
+* java versao 1.8 or greather
 
 ## How to use
-git clone XXX
+
+```git clone XXX
 cd sales-data-analyzer
 make test
 
 make run
+```
 
 After that, all files in "data/in/*.dat" (default) will be interpreted. After that, a stat file will be saved on "data/out", and the original file will be moved to "data/proc". Besides that anyone could see the logs on console, all logs are keepd in a log file in "data/log/sda.log".
 
