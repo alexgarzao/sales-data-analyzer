@@ -9,14 +9,29 @@ Simple sales data analyzer, 100% coded in Java.
 
 ## How to use
 
-```git clone XXX
+```
+git clone XXX
 cd sales-data-analyzer
 make test
 
 make run
 ```
 
-After that, all files in "data/in/*.dat" (default) will be interpreted. After that, a stat file will be saved on "data/out", and the original file will be moved to "data/proc". Besides that anyone could see the logs on console, all logs are keepd in a log file in "data/log/sda.log".
+After that, all files in "data/in/*.dat" (default) will be interpreted. Stats file will be saved on "data/out", and the original file will be moved to "data/proc". Besides that anyone could see the logs on the console, all logs are keeped in a log file at "data/log/sda.log".
+
+## TO DO
+
+A lot of things in my mind :-)
+
+* If the thread pool queue increase a lot, it's interesting to take a look at this (hint 5): https://www.nurkiewicz.com/2014/11/executorservice-10-tips-and-tricks.html
+* Check if CPF and CNPJ are valids
+* Check if the salesman, in a sell, are present as a record 002
+* /metrics to responde to some system with stats (prometheus, for example)
+* Capture CTRL+C
+* Lint tools, code coverage, ...
+* Docker
+* Arguments throw command line
+* Functional tests with huges files
 
 
 
@@ -33,18 +48,7 @@ Precisa banco? Só se forem muitos vendedores
 strings muito grandes no arquivo? e linhas muito grandes?
 string tem suporte a INT.MAX
 formato do arquivo de saida (registro 099)
-melhorias previstas…
-Hint 5 from here: https://www.nurkiewicz.com/2014/11/executorservice-10-tips-and-tricks.html
-validar cpf/cnpj
-validar vendedor desconhecido
-api para responder com stats (prometheus?)
-capturar CTRL+C
-Cobertura de codigo? Lint?
-Docker?
-parametros via linha de comando
-poder definir Nível de log (debug, info, warning, error?)
-classe mais generica: watcher
-Gerar arquivos gigantes para o teste e valida o resultado
+
 …
 
 //////////////////
