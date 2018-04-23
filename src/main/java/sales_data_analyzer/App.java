@@ -17,12 +17,12 @@ public class App
 
     public static void main( String[] args )
     {
-        new LoggerConfig("data/log/sda.log");
+        new LoggerConfig(AppConfig.logFilename);
 
         LOGGER.info("Starting Sales Data Analyzer 0.1");
 
-        ExecutorService executor = Executors.newFixedThreadPool(20);
-        FileWatcher fileWatcher = new FileWatcher(Paths.get("./data/in"), executor);
+        ExecutorService executor = Executors.newFixedThreadPool(AppConfig.maxWorkers);
+        FileWatcher fileWatcher = new FileWatcher(Paths.get(AppConfig.inPath), executor);
         fileWatcher.start();
 
         LOGGER.info("Ending Sales Data Analyzer 0.1");
