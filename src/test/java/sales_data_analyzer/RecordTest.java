@@ -44,15 +44,15 @@ public class RecordTest
      */
     public void testValidatingInputExample() throws RecordInvalidTokenException
     {
-        Record t = new Record("001", 4);
+        Record t = new Record("001", 4, AppConfig.recordDelimiter);
         t.parser("001ç1234567891234çDiegoç50000");
         t.parser("001ç3245678865434çRenatoç40000.99");
 
-        t = new Record("002", 4);
+        t = new Record("002", 4, AppConfig.recordDelimiter);
         t.parser("002ç2345675434544345çJosedaSilvaçRural");
         t.parser("002ç2345675433444345çEduardoPereiraçRural");
 
-        t = new Record("003", 4);
+        t = new Record("003", 4, AppConfig.recordDelimiter);
         t.parser("003ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiego");
         t.parser("003ç08ç[1-34-10,2-33-1.50,3-40-0.10]çRenato");
     }
@@ -62,15 +62,15 @@ public class RecordTest
      */
     public void testWithInvalidFormatId()
     {
-        Record t = new Record("001", 4);
+        Record t = new Record("001", 4, AppConfig.recordDelimiter);
         assertRecordInvalidTokenException(t, "002ç1234567891234çDiegoç50000");
         assertRecordInvalidTokenException(t, "003ç3245678865434çRenatoç40000.99");
 
-        t = new Record("002", 4);
+        t = new Record("002", 4, AppConfig.recordDelimiter);
         assertRecordInvalidTokenException(t, "001ç2345675434544345çJosedaSilvaçRural");
         assertRecordInvalidTokenException(t, "003ç2345675433444345çEduardoPereiraçRural");
 
-        t = new Record("003", 4);
+        t = new Record("003", 4, AppConfig.recordDelimiter);
         assertRecordInvalidTokenException(t, "001ç10ç[1-10-100,2-30-2.50,3-40-3.10]çDiego");
         assertRecordInvalidTokenException(t, "002ç08ç[1-34-10,2-33-1.50,3-40-0.10]çRenato");
     }
@@ -80,7 +80,7 @@ public class RecordTest
      */
     public void testWithLessDataThanNecessary()
     {
-        Record t = new Record("001", 4);
+        Record t = new Record("001", 4, AppConfig.recordDelimiter);
         assertRecordInvalidTokenException(t, "001ç12345678901çName 1ç");
         assertRecordInvalidTokenException(t, "001ç12345678901çName 1");
         assertRecordInvalidTokenException(t, "001ç12345678901ç");
@@ -94,7 +94,7 @@ public class RecordTest
      */
     public void testWithMoreDataThanNecessary()
     {
-        Record t = new Record("001", 4);
+        Record t = new Record("001", 4, AppConfig.recordDelimiter);
         assertRecordInvalidTokenException(t, "001ç12345678901çName 1ç123456.78ç12");
         assertRecordInvalidTokenException(t, "001ç12345678901çName 1ç123456.78çAç");
         assertRecordInvalidTokenException(t, "001ç12345678901çName 1ç123456.78çAç12");
@@ -105,23 +105,23 @@ public class RecordTest
      */
     public void testParserLength() throws RecordInvalidTokenException
     {
-        Record t = new Record("001", 4);
+        Record t = new Record("001", 4, AppConfig.recordDelimiter);
         t.parser("001ç1234567891234çDiegoç50000");
         assertTrue(t.length() == 4);
 
-        t = new Record("001", 3);
+        t = new Record("001", 3, AppConfig.recordDelimiter);
         t.parser("001ç1234567891234çDiegoç");
         assertTrue(t.length() == 3);
         t.parser("001ç1234567891234çDiego");
         assertTrue(t.length() == 3);
 
-        t = new Record("001", 2);
+        t = new Record("001", 2, AppConfig.recordDelimiter);
         t.parser("001ç1234567891234ç");
         assertTrue(t.length() == 2);
         t.parser("001ç1234567891234");
         assertTrue(t.length() == 2);
 
-        t = new Record("001", 1);
+        t = new Record("001", 1, AppConfig.recordDelimiter);
         t.parser("001ç");
         assertTrue(t.length() == 1);
         t.parser("001");
@@ -133,7 +133,7 @@ public class RecordTest
      */
     public void testTokenData() throws RecordInvalidTokenException
     {
-        Record t = new Record("001", 4);
+        Record t = new Record("001", 4, AppConfig.recordDelimiter);
         t.parser("001ç1234567891234çDiegoç50000");
         assertTrue(t.length() == 4);
         assertTrue(t.getToken(0).equals("001"));
@@ -147,7 +147,7 @@ public class RecordTest
      */
     public void testInvalidTokenException() throws RecordInvalidTokenException
     {
-        Record t = new Record("001", 4);
+        Record t = new Record("001", 4, AppConfig.recordDelimiter);
         t.parser("001ç1234567891234çDiegoç50000");
         assertTrue(t.length() == 4);
 
@@ -162,5 +162,19 @@ public class RecordTest
             assertTrue("RecordInvalidTokenException not occurred!", false);
         } catch (RecordInvalidTokenException e) {
         }
+    }
+
+    /**
+     * Test token data with / delimiter.
+     */
+    public void testTokenDataWithSlashDelimiter() throws RecordInvalidTokenException
+    {
+        Record t = new Record("001", 4, "/");
+        t.parser("001/1234567891234/Diego/50000");
+        assertTrue(t.length() == 4);
+        assertTrue(t.getToken(0).equals("001"));
+        assertTrue(t.getToken(1).equals("1234567891234"));
+        assertTrue(t.getToken(2).equals("Diego"));
+        assertTrue(t.getToken(3).equals("50000"));
     }
 }

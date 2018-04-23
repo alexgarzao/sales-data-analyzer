@@ -24,7 +24,7 @@ public class Sales extends Record
 
     public Sales()
     {
-        super(RECORD_ID, FIELDS_COUNT);
+        super(RECORD_ID, FIELDS_COUNT, AppConfig.recordDelimiter);
     }
 
     /**

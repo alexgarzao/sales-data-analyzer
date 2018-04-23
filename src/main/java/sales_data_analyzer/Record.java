@@ -9,13 +9,15 @@ public class Record
 {
     private String recordId;
     private int dataNumber;
+    private String fieldsDelimiter;
     protected String[] tokens;
     private int total;
 
-    public Record(String recordId, int dataNumber)
+    public Record(String recordId, int dataNumber, String fieldsDelimiter)
     {
         this.recordId = recordId;
         this.dataNumber = dataNumber;
+        this.fieldsDelimiter = fieldsDelimiter;
     }
 
     /**
@@ -27,7 +29,7 @@ public class Record
     */
     public void parser(String data) throws RecordInvalidTokenException
     {
-        tokens = data.split(AppConfig.recordDelimiter);
+        tokens = data.split(fieldsDelimiter);
 
         if (tokens.length != dataNumber) {
             throw new RecordInvalidTokenException();

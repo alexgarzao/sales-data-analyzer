@@ -16,7 +16,7 @@ public class Customer extends Record
 
     public Customer()
     {
-        super(RECORD_ID, FIELDS_COUNT);
+        super(RECORD_ID, FIELDS_COUNT, AppConfig.recordDelimiter);
     }
 
     /**
