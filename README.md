@@ -100,4 +100,6 @@ A lot of things in my mind :-)
 * Docker
 * Pass arguments throw command line
 * Functional tests with huges files
+* A way to escape de field delimiter (is it necessary?)
+* A better organization on the data sample tests
 * ...
