@@ -22,21 +22,13 @@ public class App
     */
     public static void main(String[] args)
     {
+        createDefaultDataDirs();
         loggerConfig();
 
         LOGGER.info("Starting Sales Data Analyzer 0.1");
         LOGGER.info("Current config is " + AppConfig.toLog());
 
-        createDefaultDataDirs();
         startFileWatcher();
-    }
-
-    /**
-    * Config the logger.
-    */
-    private static void loggerConfig()
-    {
-        new LoggerConfig(AppConfig.logPath + AppConfig.logFilename);
     }
 
     /**
@@ -50,8 +42,16 @@ public class App
             Files.createDirectories(Paths.get(AppConfig.procPath));
             Files.createDirectories(Paths.get(AppConfig.logPath));
         } catch(IOException ex) {
-            LOGGER.severe("When trying to create default paths: " + ex.toString());
+            System.out.println("ERROR: When trying to create default paths: " + ex.toString());
         }
+    }
+
+    /**
+    * Config the logger.
+    */
+    private static void loggerConfig()
+    {
+        new LoggerConfig(AppConfig.logPath + AppConfig.logFilename);
     }
 
     /**
