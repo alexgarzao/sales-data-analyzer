@@ -7,13 +7,16 @@ package sales_data_analyzer;
 */
 public class Customer extends Record
 {
-    String CNPJ;
-    String name;
-    String businessArea;
+    private static final String RECORD_ID = "002";
+    private static final int FIELDS_COUNT = 4;
+
+    private String CNPJ;
+    private String name;
+    private String businessArea;
 
     public Customer()
     {
-        super("002", 4);
+        super(RECORD_ID, FIELDS_COUNT);
     }
 
     /**
@@ -23,17 +26,22 @@ public class Customer extends Record
     * @return true if the data could be parsed,
     *         false otherwise.
     */
-    public void parser(String data) throws RecordInvalidTokenException
+    public void parser(String data)
+        throws RecordInvalidTokenException
     {
+        final int CNPJ_INDEX = 1;
+        final int NAME_INDEX = 2;
+        final int BUSINESS_AREA_INDEX = 3;
+
         CNPJ = "";
         name = "";
         businessArea = "";
 
         super.parser(data);
 
-        CNPJ = tokens[1];
-        name = tokens[2];
-        businessArea = tokens[3];
+        CNPJ = tokens[CNPJ_INDEX];
+        name = tokens[NAME_INDEX];
+        businessArea = tokens[BUSINESS_AREA_INDEX];
     }
 
     public String getCNPJ()

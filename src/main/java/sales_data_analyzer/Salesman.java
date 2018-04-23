@@ -7,13 +7,16 @@ package sales_data_analyzer;
 */
 public class Salesman extends Record
 {
+    private static final String RECORD_ID = "001";
+    private static final int FIELDS_COUNT = 4;
+
     private String CPF;
     private String name;
     private double salary;
 
     public Salesman()
     {
-        super("001", 4);
+        super(RECORD_ID, FIELDS_COUNT);
     }
 
     /**

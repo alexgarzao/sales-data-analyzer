@@ -23,8 +23,6 @@ public class App
         LOGGER.info("Current config is " + AppConfig.toLog());
 
         startThreadPoolAndFileWatcher();
-
-        LOGGER.info("Ending Sales Data Analyzer 0.1");
     }
 
     private static void loggerConfig()

@@ -10,6 +10,9 @@ import java.util.Map;
 */
 public class Sales extends Record
 {
+    private static final String RECORD_ID = "003";
+    private static final int FIELDS_COUNT = 4;
+
     private String saleId;
     private String salesman;
     private double totalSale;
@@ -21,7 +24,7 @@ public class Sales extends Record
 
     public Sales()
     {
-        super("003", 4);
+        super(RECORD_ID, FIELDS_COUNT);
     }
 
     /**
@@ -33,15 +36,19 @@ public class Sales extends Record
     */
     public void parser(String data) throws RecordInvalidTokenException
     {
+        final int SALE_ID_INDEX = 1;
+        final int ITEMS_INDEX = 2;
+        final int SALESMAN_INDEX = 3;
+
         saleId = "";
         salesman = "";
-        totalSale = 0;
+        totalSale = 0d;
 
         super.parser(data);
 
-        saleId = tokens[1];
-        String items = tokens[2];
-        salesman = tokens[3];
+        saleId = tokens[SALE_ID_INDEX];
+        String items = tokens[ITEMS_INDEX];
+        salesman = tokens[SALESMAN_INDEX];
 
         totalSale = calcTotalSaleFromItems(items);
 
@@ -58,13 +65,14 @@ public class Sales extends Record
     // [ItemID-ItemQuantity-ItemPrice]
     // Example: [1-10-100,2-30-2.50,3-40-3.10]
     private double calcTotalSaleFromItems(String items)
+        throws RecordInvalidTokenException
     {
         if (items.charAt(0) != '[') {
-            return 0;
+            throw new RecordInvalidTokenException();
         }
 
         if (items.charAt(items.length() - 1) != ']') {
-            return 0;
+            throw new RecordInvalidTokenException();
         }
 
         double totalSale = 0d;
@@ -73,7 +81,7 @@ public class Sales extends Record
         for (int itemNumber = 0; itemNumber < itemList.length; itemNumber++) {
             String tokens[] = itemList[itemNumber].split("-");
             if (tokens.length != 3) {
-                return 0;
+                throw new RecordInvalidTokenException();
             }
 
             double quantity = Double.parseDouble(tokens[1]);

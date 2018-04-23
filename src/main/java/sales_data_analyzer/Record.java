@@ -27,7 +27,7 @@ public class Record
     */
     public void parser(String data) throws RecordInvalidTokenException
     {
-        tokens = data.split("ç");
+        tokens = data.split(AppConfig.recordDelimiter);
 
         if (tokens.length != dataNumber) {
             throw new RecordInvalidTokenException();
@@ -37,7 +37,7 @@ public class Record
             throw new RecordInvalidTokenException();
         }
 
-        total += 1;
+        total++;
     }
 
     public int length()
