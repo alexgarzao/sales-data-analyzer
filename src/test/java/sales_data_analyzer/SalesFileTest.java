@@ -172,4 +172,25 @@ public class SalesFileTest
             assertTrue("IO exception!", false);
         }
     }
+
+    /**
+     * File with DOS EOL .
+     */
+    public void testFileWithDosEol()
+    {
+        try {
+            SalesFile t = new SalesFile("samples/data/in/base_dos_eol.dat", "samples/data/out/base_dos_eol.done.dat", "samples/data/proc/base_dos_eol.dat");
+            t.process();
+            assertEquals(t.getTotalSalesman(), 2);
+            assertEquals(t.getTotalClients(), 2);
+            assertEquals(t.getMostExpensiveSaleId(), "10");
+            assertEquals(t.getWorstSalesman(), "Renato");
+        } catch(RecordInvalidTokenException ex) {
+            assertTrue("This file is well formed, but something is wrong!", false);
+        } catch(FileNotFoundException e) {
+            assertTrue("File must exist to complete the test!", false);
+        } catch(IOException e) {
+            assertTrue("IO exception!", false);
+        }
+    }
 }
