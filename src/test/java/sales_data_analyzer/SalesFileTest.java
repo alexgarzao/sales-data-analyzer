@@ -106,5 +106,24 @@ public class SalesFileTest
         }
     }
 
+    /**
+     * Interpreting file with empty lines.
+     */
+    public void testFileWithEmptyLines()
+    {
+        try {
+            SalesFile t = new SalesFile("samples/data/in/base_with_empty_lines.dat", "samples/data/out/base_with_empty_lines.done.dat", "samples/data/proc/base_with_empty_lines.dat");
+            t.process();
+            assertEquals(t.getTotalSalesman(), 2);
+            assertEquals(t.getTotalClients(), 2);
+            assertEquals(t.getMostExpensiveSaleId(), "10");
+            assertEquals(t.getWorstSalesman(), "Renato");
+        } catch(FileNotFoundException e) {
+            assertTrue("File must exist to complete the test!", false);
+        } catch(IOException e) {
+            assertTrue("IO exception!", false);
+        }
+    }
+
     // TODO: example with a lot of data.
 }
