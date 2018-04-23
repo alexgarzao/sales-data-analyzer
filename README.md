@@ -19,6 +19,13 @@ make run
 
 After that, all files in "data/in/*.dat" (default) will be interpreted. Stats file will be saved on "data/out", and the original file will be moved to "data/proc". Besides that anyone could see the logs on the console, all logs are keeped in a log file at "data/log/sda.log".
 
+## Some design decisions
+
+* 1 thread per file: In my opinion, there a lot of IO, and just a little of CPU time to process these files. With this in mind, it's not necessary split huge file and process in parallel. In Linux, AFAIK, if when one file is open, if is passed a "look ahead" option, the OS do some improvements to speed up the file read.
+* Is prepared to huge files? In my opinion, yes. With these files, the memory consumed to process is proportional to the number of sellers.
+* All the data, during the process, are keeped in memory. With this in mind, wasn't necessary to use a DBMS.
+* The size of each record line and each token is proportional to the size of a Java string (INT.MAX)
+
 ## TO DO
 
 A lot of things in my mind :-)
@@ -39,14 +46,6 @@ A lot of things in my mind :-)
 
 
 formato de entrada/saida
-arquitetura
-Deixar claro o por que das decisões
-1 thread por arquivo…. como tem muito I/O, e o cálculo é “leve”, não vale o preço de separar o arquivo e processar em paralelo. Até porque o S.O, se configurado na abertura do arquivo, vai privilegiar a leitura sequencial fazendo o “look ahead”
-Preparado para grandes arquivos?
-Acredito que o problema seria a quantidade de vendedores, e não o tamanho do arquivo
-Precisa banco? Só se forem muitos vendedores
-strings muito grandes no arquivo? e linhas muito grandes?
-string tem suporte a INT.MAX
 formato do arquivo de saida (registro 099)
 
 …
