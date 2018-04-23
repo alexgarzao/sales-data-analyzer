@@ -94,6 +94,7 @@ A lot of things in my mind :-)
 * If the thread pool queue increases a lot, it's interesting to take a look at this (hint 5): https://www.nurkiewicz.com/2014/11/executorservice-10-tips-and-tricks.html
 * Check if CPF and CNPJ are valids
 * Check if the salesmans, in a sell, are present as a record 002
+* Check for duplicated sales id
 * /metrics to response to some system (like prometheus, for example)
 * Capture CTRL+C
 * Lint tools, code coverage, ...
@@ -102,4 +103,6 @@ A lot of things in my mind :-)
 * Functional tests with huges files
 * A way to escape de field delimiter (is it necessary?)
 * A better organization on the data sample tests
+* A way to specify the log level
+* FileWatcher could use an interface to notify a resource when exist a new file
 * ...
