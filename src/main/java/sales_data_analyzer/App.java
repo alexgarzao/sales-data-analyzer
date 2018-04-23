@@ -21,8 +21,7 @@ public class App
 
         LOGGER.info("Starting Sales Data Analyzer 0.1");
 
-        // TODO: define the correct thread pool size bellow.
-        ExecutorService executor = Executors.newFixedThreadPool(2);
+        ExecutorService executor = Executors.newFixedThreadPool(20);
         FileWatcher fileWatcher = new FileWatcher(Paths.get("./data/in"), executor);
         fileWatcher.start();
 
