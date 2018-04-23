@@ -9,7 +9,7 @@ public class WorkerConfig {
         this.bkpFilename = bkpFilename;
     }
 
-    // TODO: must be private, with get/set?
+    // TODO: must be private, with get/set
     public String inFilename;
     public String outFilename;
     public String bkpFilename;
