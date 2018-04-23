@@ -1,5 +1,8 @@
 package sales_data_analyzer;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class AppConfig {
     public static final String inPath = "./data/in";
     public static final String outPath = "./data/out";
@@ -21,5 +24,22 @@ public class AppConfig {
             bkpPath, maxWorkers, fileSuffixToProcess,
             fileSuffixWhenDone, logFilename)
         );
+    }
+
+    public static String getOutFilename(String inFilename)
+    {
+        Path p = Paths.get(inFilename);
+        String file = p.getFileName().toString();
+
+        // TODO: se der para padronizar todos os paths com / no final na config, essa barra abaixo eh inutil
+        return(outPath + "/" + file.replace(fileSuffixToProcess, fileSuffixWhenDone));
+    }
+
+    public static String getBkpFilename(String inFilename)
+    {
+        Path p = Paths.get(inFilename);
+        String file = p.getFileName().toString();
+
+        return(procPath + "/" + file);
     }
 }
