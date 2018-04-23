@@ -31,16 +31,19 @@ public class ProcessSalesFile
     private String inFilename;
     private String outFilename;
     private String bkpFilename;
+    private String fieldDelimiter;
+
     private SalesFileReader salesFileReader;
 
     /**
     * ProcessSalesFile is responsible to define the file to be processed.
     */
-    public ProcessSalesFile(String inFilename, String outFilename, String bkpFilename)
+    public ProcessSalesFile(String inFilename, String outFilename, String bkpFilename, String fieldDelimiter)
     {
         this.inFilename = inFilename;
         this.outFilename = outFilename;
         this.bkpFilename = bkpFilename;
+        this.fieldDelimiter = fieldDelimiter;
     }
 
     /**
@@ -58,7 +61,7 @@ public class ProcessSalesFile
     private void processFile()
         throws FileNotFoundException, IOException, RecordInvalidTokenException
     {
-        salesFileReader = new SalesFileReader(inFilename);
+        salesFileReader = new SalesFileReader(inFilename, fieldDelimiter);
         salesFileReader.read();
     }
 
@@ -70,8 +73,8 @@ public class ProcessSalesFile
     public void saveFileStats()
         throws IOException
     {
-        SalesFileStats salesFileStats = new SalesFileStats(outFilename);
-        salesFileStats.save(salesFileReader);
+        SalesFileStats salesFileStats = new SalesFileStats();
+        salesFileStats.save(outFilename, fieldDelimiter, salesFileReader);
     }
 
     private void doFileBackup()

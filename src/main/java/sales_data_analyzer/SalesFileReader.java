@@ -26,18 +26,21 @@ public class SalesFileReader
     private static final int RECORD_SIZE = RECORD_ID.length();
 
     private String inFilename;
-    private Salesman salesmanData = new Salesman();
-    private Customer customerData = new Customer();
-    private Sales salesData = new Sales();
+    private Salesman salesmanData;
+    private Customer customerData;
+    private Sales salesData;
     private long spentTimeToProcess;
     private long fileLines;
 
     /**
     * SalesFileReader is responsible to define the file to be parsed.
     */
-    public SalesFileReader(String inFilename)
+    public SalesFileReader(String inFilename, String fieldDelimiter)
     {
         this.inFilename = inFilename;
+        salesmanData = new Salesman(fieldDelimiter);
+        customerData = new Customer(fieldDelimiter);
+        salesData = new Sales(fieldDelimiter);
     }
 
     /**

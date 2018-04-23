@@ -14,9 +14,9 @@ public class Customer extends Record
     private String name;
     private String businessArea;
 
-    public Customer()
+    public Customer(String fieldDelimiter)
     {
-        super(RECORD_ID, FIELDS_COUNT, AppConfig.recordDelimiter);
+        super(RECORD_ID, FIELDS_COUNT, fieldDelimiter);
     }
 
     /**

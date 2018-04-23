@@ -28,29 +28,19 @@ public class SalesFileStats
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private static final String RECORD_ID = "003";
 
-    private String outFilename;
-
-    /**
-    * ProcessSalesFile is responsible to define the file to be processed.
-    */
-    public SalesFileStats(String outFilename)
-    {
-        this.outFilename = outFilename;
-    }
-
     /**
     * save is responsible to save the stats on the out filename.
     *
     * Format: 099çTotalSalesMançTotalCustomersçMostExpensiveSaleIdçWorstSalesman
     */
-    public void save(SalesFileReader salesFileReader)
+    public void save(String outFilename, String fieldDelimiter, SalesFileReader salesFileReader)
         throws IOException
     {
         StringBuilder str = new StringBuilder(RECORD_ID);
-        str.append(AppConfig.recordDelimiter + salesFileReader.getTotalSalesman());
-        str.append(AppConfig.recordDelimiter + salesFileReader.getTotalCustomers());
-        str.append(AppConfig.recordDelimiter + salesFileReader.getMostExpensiveSaleId());
-        str.append(AppConfig.recordDelimiter + salesFileReader.getWorstSalesman());
+        str.append(fieldDelimiter + salesFileReader.getTotalSalesman());
+        str.append(fieldDelimiter + salesFileReader.getTotalCustomers());
+        str.append(fieldDelimiter + salesFileReader.getMostExpensiveSaleId());
+        str.append(fieldDelimiter + salesFileReader.getWorstSalesman());
         str.append('\n');
 
         BufferedWriter writer = new BufferedWriter(new FileWriter(outFilename));

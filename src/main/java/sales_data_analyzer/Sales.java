@@ -22,9 +22,9 @@ public class Sales extends Record
 
     private Map<String, Double> salesPerSeller = new HashMap<String, Double>();
 
-    public Sales()
+    public Sales(String fieldDelimiter)
     {
-        super(RECORD_ID, FIELDS_COUNT, AppConfig.recordDelimiter);
+        super(RECORD_ID, FIELDS_COUNT, fieldDelimiter);
     }
 
     /**

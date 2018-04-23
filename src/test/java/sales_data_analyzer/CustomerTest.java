@@ -17,7 +17,7 @@ public class CustomerTest
      */
     protected void setUp()
     {
-        t = new Customer();
+        t = new Customer(AppConfig.fieldDelimiter);
     }
 
     /**

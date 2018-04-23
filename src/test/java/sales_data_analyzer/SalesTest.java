@@ -17,7 +17,7 @@ public class SalesTest
      */
     protected void setUp()
     {
-        t = new Sales();
+        t = new Sales(AppConfig.fieldDelimiter);
     }
 
     /**

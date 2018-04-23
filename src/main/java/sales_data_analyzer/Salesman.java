@@ -14,9 +14,9 @@ public class Salesman extends Record
     private String name;
     private double salary;
 
-    public Salesman()
+    public Salesman(String fieldDelimiter)
     {
-        super(RECORD_ID, FIELDS_COUNT, AppConfig.recordDelimiter);
+        super(RECORD_ID, FIELDS_COUNT, fieldDelimiter);
     }
 
     /**

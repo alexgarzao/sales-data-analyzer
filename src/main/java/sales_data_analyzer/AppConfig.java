@@ -13,7 +13,7 @@ public class AppConfig {
     public static final String logFilename = "sda.log";
     public static final String fileSuffixToProcess = ".dat";
     public static final String fileSuffixWhenDone = ".done.dat";
-    public static final String recordDelimiter = "ç";
+    public static final String fieldDelimiter = "ç";
 
     public static String toLog()
     {
