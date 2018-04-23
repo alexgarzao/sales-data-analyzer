@@ -62,11 +62,39 @@ public class Sales extends Record
         salesPerSeller.put(salesman, salesmanTotal);
     }
 
-    // [ItemID-ItemQuantity-ItemPrice]
-    // Example: [1-10-100,2-30-2.50,3-40-3.10]
     private double calcTotalSaleFromItems(String items)
         throws RecordInvalidTokenException
     {
+        String itemList[] = transformStringItemsIntoItemsList(items);
+        double totalSale = 0d;
+
+        for (int itemNumber = 0; itemNumber < itemList.length; itemNumber++) {
+            final String FIELDS_DELIMITER = "-";
+            final int FIELDS_COUNT = 3;
+            final int QUANTITY_INDEX = 1;
+            final int VALUE_INDEX = 2;
+
+            String tokens[] = itemList[itemNumber].split(FIELDS_DELIMITER);
+            if (tokens.length != FIELDS_COUNT) {
+                throw new RecordInvalidTokenException();
+            }
+
+            double quantity = Double.parseDouble(tokens[QUANTITY_INDEX]);
+            double value = Double.parseDouble(tokens[VALUE_INDEX]);
+
+            totalSale += (quantity * value);
+        }
+
+        return totalSale;
+    }
+
+    // [ItemID-ItemQuantity-ItemPrice]
+    // Example: [1-10-100,2-30-2.50,3-40-3.10]
+    private String[] transformStringItemsIntoItemsList(String items)
+        throws RecordInvalidTokenException
+    {
+        final String ITEMS_DELIMITER = ",";
+
         if (items.charAt(0) != '[') {
             throw new RecordInvalidTokenException();
         }
@@ -75,22 +103,7 @@ public class Sales extends Record
             throw new RecordInvalidTokenException();
         }
 
-        double totalSale = 0d;
-        String itemList[] = items.substring(1, items.length() - 2).split(",");
-
-        for (int itemNumber = 0; itemNumber < itemList.length; itemNumber++) {
-            String tokens[] = itemList[itemNumber].split("-");
-            if (tokens.length != 3) {
-                throw new RecordInvalidTokenException();
-            }
-
-            double quantity = Double.parseDouble(tokens[1]);
-            double value = Double.parseDouble(tokens[2]);
-
-            totalSale += (quantity * value);
-        }
-
-        return totalSale;
+        return(items.substring(1, items.length() - 2).split(ITEMS_DELIMITER));
     }
 
     public String getSaleId()
