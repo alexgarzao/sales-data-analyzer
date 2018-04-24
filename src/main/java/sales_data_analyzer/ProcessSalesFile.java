@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import java.util.logging.Logger;
+import java.util.Locale;
 
 /**
 * ProcessSalesFile class is responsible to process the sale file.
@@ -25,7 +26,7 @@ public class ProcessSalesFile
     private String bkpFilename;
     private String fieldDelimiter;
 
-    private SalesFile SalesFile;
+    private SalesFile salesFile;
 
     /**
     * ProcessSalesFile is responsible to define the file to be processed.
@@ -56,8 +57,8 @@ public class ProcessSalesFile
     private void processFile()
         throws FileNotFoundException, IOException, RecordInvalidTokenException
     {
-        SalesFile = new SalesFile(inFilename, fieldDelimiter);
-        SalesFile.read();
+        salesFile = new SalesFile(inFilename, fieldDelimiter);
+        salesFile.read();
     }
 
     /**
@@ -69,7 +70,7 @@ public class ProcessSalesFile
         throws IOException
     {
         SalesFileStats salesFileStats = new SalesFileStats();
-        salesFileStats.save(outFilename, fieldDelimiter, SalesFile);
+        salesFileStats.save(outFilename, fieldDelimiter, salesFile);
     }
 
     /**
@@ -83,7 +84,7 @@ public class ProcessSalesFile
         try {
             Files.move(source, target, StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception ex) {
-            LOGGER.severe("When trying to move the file: " + ex.toString());
+            LOGGER.severe("When trying to move the file: " + ex);
         }
 
         LOGGER.info(String.format("File moved from %s to %s", inFilename, bkpFilename));
@@ -95,7 +96,8 @@ public class ProcessSalesFile
     private void logStats()
     {
         LOGGER.info(String.format(
-            "File: %s TimeToProcess: %d Lines: %d TotalSalesman: %d TotalCustomers: %d TotalSales: %d",
-            inFilename, SalesFile.getSpentTimeToProcess(), SalesFile.getFileLines(), SalesFile.getTotalSalesman(), SalesFile.getTotalCustomers(), SalesFile.getTotalSales()));
+            Locale.US,
+            "File: %s TimeToProcess(s): %.2f Lines: %d TotalSalesman: %d TotalCustomers: %d TotalSales: %d",
+            inFilename, salesFile.getSpentTimeToProcess() / 1000.0, salesFile.getFileLines(), salesFile.getTotalSalesman(), salesFile.getTotalCustomers(), salesFile.getTotalSales()));
     }
 }
