@@ -105,4 +105,5 @@ A lot of things in my mind :-)
 * A better organization on the data sample tests
 * A way to specify the log level
 * FileWatcher could use an interface to notify a resource when exist a new file
+* Try to use mmap (memory map file): https://www.codeproject.com/Tips/683614/Things-to-Know-about-Memory-Mapped-File-in-Java
 * ...
