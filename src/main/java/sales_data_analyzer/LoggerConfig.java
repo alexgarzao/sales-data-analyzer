@@ -41,11 +41,14 @@ public class LoggerConfig {
 class MyFormatter extends SimpleFormatter{
     @Override
     public synchronized String format(LogRecord record) {
+        StackTraceElement l = new Exception().getStackTrace()[7];
+        String fileInfo = l.getClassName()+"."+l.getMethodName()+":"+l.getLineNumber();
         record.setSourceClassName(MyFormatter.class.getName());
         return String.format(
-            "[%1$s]: %2$s - %3$s\n",
+            "[%1$s]: %2$s - %3$s - %4$s\n",
             record.getLevel().getName(),
             Thread.currentThread().getName(),
+            fileInfo,
             formatMessage(record));
     }
 }
