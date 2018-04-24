@@ -52,7 +52,7 @@ public class FileWatcher
         try {
             // INotify config to watch for files in a specific filepath.
             WatchService watchService = path.getFileSystem().newWatchService();
-            path.register(watchService, StandardWatchEventKinds.ENTRY_MODIFY);
+            path.register(watchService, StandardWatchEventKinds.ENTRY_CREATE);
 
             readFilesFromPathOnStartup();
             watchDirectory(watchService);
