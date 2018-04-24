@@ -44,7 +44,7 @@ public class Salesman extends Record
         try {
             salary = Double.parseDouble(tokens[SALARY_INDEX]);
         } catch (NumberFormatException e) {
-            throw new RecordInvalidTokenException();
+            throw new RecordInvalidTokenException("Invalid salary field format");
         }
     }
 

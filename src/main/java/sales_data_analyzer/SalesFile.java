@@ -108,7 +108,9 @@ public class SalesFile
                 salesData.addNewSalesman(salesmanData.getName());
             }
         } catch(Exception ex) {
-            throw new RecordInvalidTokenException();
+            throw new RecordInvalidTokenException(
+                String.format("Invalid record processing file %s:%d - %s", inFilename, getFileLines(), ex)
+            );
         }
     }
 

@@ -80,7 +80,7 @@ public class Sales extends Record
 
             String tokens[] = itemList[itemNumber].split(FIELDS_DELIMITER);
             if (tokens.length != FIELDS_COUNT) {
-                throw new RecordInvalidTokenException();
+                throw new RecordInvalidTokenException("Invalid token count in items");
             }
 
             double quantity = Double.parseDouble(tokens[QUANTITY_INDEX]);
@@ -100,11 +100,11 @@ public class Sales extends Record
         final String ITEMS_DELIMITER = ",";
 
         if (items.charAt(0) != '[') {
-            throw new RecordInvalidTokenException();
+            throw new RecordInvalidTokenException("[ not found");
         }
 
         if (items.charAt(items.length() - 1) != ']') {
-            throw new RecordInvalidTokenException();
+            throw new RecordInvalidTokenException("] not found");
         }
 
         return(items.substring(1, items.length() - 2).split(ITEMS_DELIMITER));

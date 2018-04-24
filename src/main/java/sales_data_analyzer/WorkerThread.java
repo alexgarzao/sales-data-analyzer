@@ -25,7 +25,7 @@ public class WorkerThread implements Runnable
         try {
             processCommand();
         } catch(Exception ex) {
-            LOGGER.severe(ex.toString());
+            LOGGER.severe("Exception ocurred when processing: " + ex);
         }
     }
 
@@ -39,7 +39,7 @@ public class WorkerThread implements Runnable
             ProcessSalesFile t = new ProcessSalesFile(inFilename, outFilename, bkpFilename, AppConfig.fieldDelimiter);
             t.process();
         } catch(RecordInvalidTokenException ex) {
-            LOGGER.severe(String.format("Invalid record processing file %s: %s", inFilename, ex));
+            LOGGER.severe(String.format("Invalid record processing file %s when run ProcessSalesFile.process: %s", inFilename, ex));
         } catch(FileNotFoundException ex) {
             LOGGER.severe(String.format("File not found: %s", inFilename));
         } catch(IOException ex) {

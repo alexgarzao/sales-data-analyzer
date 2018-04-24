@@ -32,11 +32,11 @@ public class Record
         tokens = data.split(fieldsDelimiter);
 
         if (tokens.length != dataNumber) {
-            throw new RecordInvalidTokenException();
+            throw new RecordInvalidTokenException("Invalid token length");
         }
 
         if (tokens[0].equals(recordId) == false) {
-            throw new RecordInvalidTokenException();
+            throw new RecordInvalidTokenException("Invalid record id");
         }
 
         total++;
@@ -56,7 +56,7 @@ public class Record
     public String getToken(int index) throws RecordInvalidTokenException
     {
         if (index < 0 || index > length() - 1) {
-            throw new RecordInvalidTokenException(Integer.toString(index));
+            throw new RecordInvalidTokenException("Index out of range: " + index);
         }
 
         return tokens[index];
