@@ -2,6 +2,10 @@
 
 Simple sales data analyzer, 100% coded in Java.
 
+I have not programmed in Java for the last 20 years, and the last things I did were simple college jobs.
+
+In this project I had to learn Java, and tried to use best programming practices within the context of the language. I believe that many things can still be improved, but as a first exercise, I believe it is good.
+
 ## Requirements
 
 * maven
