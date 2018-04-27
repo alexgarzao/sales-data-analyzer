@@ -95,6 +95,7 @@ Stats data has the format id 099 and the line will have the following format.
 
 A lot of things in my mind :-)
 
+* How the architecture works, and why
 * If the thread pool queue increases a lot, it's interesting to take a look at this (hint 5): https://www.nurkiewicz.com/2014/11/executorservice-10-tips-and-tricks.html
 * Check if CPF and CNPJ are valids
 * Check if the salesmans, in a sell, are present as a record 002
